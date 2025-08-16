@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/utilities.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="hero flex">
+      <div class="main container glass flex">
+        <div class="login flex">
+          <div class="logo"></div>
+          <div class="detail flex">
+            <form action="/login" method="post">
+              <div class="email flex my-1">
+                <label for="email"
+                  ><i class="fa fa-user" aria-hidden="true"></i>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                />
+              </div>
+              <div class="pass flex">
+                <label for="pass"
+                  ><i class="fa fa-key" aria-hidden="true"></i
+                ></label>
+                <input
+                  type="password"
+                  name="pass"
+                  id="pass"
+                  placeholder="Password"
+                />
+              </div>
+
+              <button type="submit" class="btn my-1 esm">Log in</button>
+            </form>
+
+            <fieldset class="text-center">
+              <legend class="p-1" style="color: black; font-size: 13px">
+                Sign in with
+              </legend>
+              <a href=""
+                ><img src="/assets/google.png" alt="googlw" height="23px"
+              /></a>
+              <a href=""
+                ><img src="/assets/facebook.png" alt="facebook" height="23px"
+              /></a>
+              <a href=""
+                ><img src="/assets/apple-logo.png " alt="apple" height="23px"
+              /></a>
+            </fieldset>
+
+            <p>Don't have any account?<a id="Signup-btn"> Sign Up</a></p>
+
+            <div class="sign-up flex bg-light">
+              <button class="close"><i class="fa-solid fa-xmark"></i></button>
+              <h3 class="p-2">Create a new account</h3>
+
+              <form action="/signup" method="post">
+                <div class="name flex">
+                  <input type="text" name="fname" placeholder="First name" />
+                  <input type="text" name="lname" placeholder="Last name" />
+                </div>
+                <div class="email flex my-1">
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                  />
+                </div>
+                <div class="pass flex">
+                  <input
+                    type="password"
+                    name="pass"
+                    id="pass"
+                    placeholder="New Password"
+                  />
+                </div>
+
+                <div class="gender flex p-1" style="gap: 15px">
+                  Gender:
+                  <label
+                    class="flex"
+                    style="
+                      border: 1px solid black;
+                      border-radius: 10px;
+                      padding: 0.2rem;
+
+                      height: fit-content;
+                    "
+                    ><em style="padding-right: 10px">Male</em>
+                    <input type="radio" name="sex" value="male"
+                  /></label>
+
+                  <label
+                    class="flex"
+                    style="
+                      border: 1px solid black;
+                      border-radius: 10px;
+                      padding: 0.2rem;
+                      height: fit-content;
+                    "
+                    ><em style="padding-right: 10px">Female</em>
+                    <input type="radio" name="sex" value="female"
+                  /></label>
+                </div>
+
+                <button type="submit" class="btn smy esm">Sign up</button>
+              </form>
+              <fieldset class="text-center">
+                <legend class="p-1" style="color: black; font-size: 13px">
+                  Sign up with
+                </legend>
+                <a href=""
+                  ><img src="/assets/google.png" alt="googlw" height="23px"
+                /></a>
+                <a href=""
+                  ><img src="/assets/facebook.png" alt="facebook" height="23px"
+                /></a>
+                <a href=""
+                  ><img src="/assets/apple-logo.png " alt="apple" height="23px"
+                /></a>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="/js/index.js"></script>
+  </body>
+</html>
