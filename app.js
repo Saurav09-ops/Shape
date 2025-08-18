@@ -49,6 +49,10 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
+app.get("/test", (req, res) => {
+  res.render("compose");
+});
+
 app.post("/signup", async (req, res) => {
   const fName = req.body.fname.trim();
   const lName = req.body.lname.trim();

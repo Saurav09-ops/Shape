@@ -153,12 +153,20 @@ fieldset {
   height: 100%;
 }
 
+ul {
+  list-style: none;
+}
+
 .grid-3 {
   grid-template-columns: repeat(3, 1fr);
 }
 /* margin */
 .smy {
   margin: 0.5rem;
+}
+
+.sm-x {
+  margin: 0.5rem 0;
 }
 
 .my-1 {
