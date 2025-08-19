@@ -160,11 +160,60 @@ body {
 }
 
 .title {
+  position: relative;
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
 }
 
 .title input {
-  background-color: #465c88;
+  font-size: 15px;
+  transition: 200ms ease-in-out;
+}
+
+.title label {
+  position: absolute;
+  top: 16px;
+  transform: translateX(2px);
+  display: block;
+  padding: 3px;
+  transition: 200ms ease-in-out;
+  color: grey;
+  /* z-index: 1; */
+  pointer-events: none;
+}
+
+.title:focus-within input,
+input:not(:placeholder-shown) {
+  transform: translateY(9px);
+}
+
+.title:focus-within label,
+input:not(:placeholder-shown) + label {
+  transform: translateY(-9px);
+  font-size: 13px;
+}
+
+.detail textarea {
+  border-radius: 10px;
+  width: 100%;
+  border: none;
+  margin: 1rem 0;
+  margin-bottom: 0.5rem;
+  resize: vertical;
+  padding: 1.45rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.detail textarea::placeholder {
+  letter-spacing: 0.03rem;
+}
+
+.detail textarea:focus {
+  outline: none;
+}
+
+.post-b {
+  border-radius: 20px;
+  padding: 10px 15px;
 }

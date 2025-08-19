@@ -50,10 +50,25 @@
     <section class="compose">
       <div class="container">
         <div class="post">
-          <div class="title">
-            <label>Title</label>
-            <input type="text" name="title" />
-          </div>
+          <form action="" action>
+            <div class="title">
+              <input id="title" type="text" name="title" placeholder="" />
+              <label for="title"
+                >Title<span style="color: rgba(255, 0, 0, 0.295)"
+                  >*</span
+                ></label
+              >
+            </div>
+            <div class="detail">
+              <textarea
+                id="detail"
+                name="detail"
+                rows="8"
+                placeholder="Description...."
+              ></textarea>
+            </div>
+            <button class="post-b btn" type="submit">Post</button>
+          </form>
         </div>
       </div>
     </section>
