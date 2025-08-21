@@ -79,8 +79,8 @@ app.get("/compose", (req, res) => {
 });
 
 app.post("/compose", async (req, res) => {
-  const title = req.body.title;
-  const detail = req.body.detail;
+  const title = req.body.title.trim();
+  const detail = req.body.detail.trim();
 
   await db.query("INSERT INTO posts(title,detail) values($1,$2)", [
     title,
@@ -88,6 +88,26 @@ app.post("/compose", async (req, res) => {
   ]);
 
   res.redirect("/compose");
+});
+
+app.get("/profile", async (req, res) => {
+  let result = await db.query("Select * FROM posts ORDER BY created_at DESC");
+  let posts = result.rows;
+  res.render("profile", { posts: posts });
+});
+
+app.get("/delete/:id", async (req, res) => {
+  let id = req.params.id;
+  await db.query(`DELETE FROM posts WHERE id=$1`, [id]);
+  res.redirect("/profile");
+});
+
+app.post("/update/:id", async (req, res) => {
+  let id = req.params.id;
+
+  let detail = req.body.detail.trim();
+  await db.query(`UPDATE posts SET detail=$1 WHERE id=$2`, [detail, id]);
+  res.redirect("/profile");
 });
 
 app.listen(port, (req, res) => {

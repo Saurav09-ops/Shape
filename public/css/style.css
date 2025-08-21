@@ -29,6 +29,7 @@ body {
   background-color: white;
   font-weight: 500;
   border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+  z-index: 100;
 }
 
 .nave-bar .container {
@@ -102,6 +103,7 @@ body {
 }
 
 .main .container {
+  position: relative;
   min-height: 100px;
   border: 1px solid rgba(0, 0, 0, 0.171);
   border-top: none;
@@ -123,6 +125,7 @@ body {
 }
 
 .post {
+  position: relative;
   background-color: var(--secondary-color);
   width: 70%;
   margin: 1rem auto;
@@ -215,6 +218,19 @@ input:not(:placeholder-shown) + label {
   outline: none;
 }
 
+.post-title {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.post-detail {
+  white-space: pre-wrap;
+  font-weight: 300;
+  font-size: small;
+  word-spacing: 2px;
+  line-height: 1.6;
+}
+
 .post-b {
   border-radius: 20px;
   padding: 10px 15px;
@@ -231,4 +247,35 @@ input:not(:placeholder-shown) + label {
 
 .error {
   border: 2px solid rgba(255, 0, 0, 0.411);
+}
+
+/* PROFILE-UPDATE */
+
+.update {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  opacity: 0;
+  width: 100%;
+  background-color: #ff78304b;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 100ms ease-in-out;
+  background-color: var(--secondary-color);
+  margin: auto;
+}
+
+.update-after {
+  opacity: 1;
+  height: 100%;
+  padding: 1rem;
+
+  z-index: 50;
+}
+
+.update form {
+  width: min(1000px, 75%);
+  margin: auto;
+  height: min(500px, 75%);
 }

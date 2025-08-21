@@ -19,7 +19,9 @@
     <!-- top navebar -->
     <section class="nave-bar">
       <div class="container sm flex">
-        <img class="" src="/assets/google.png" alt="" height="30px" />
+        <a href="/home"
+          ><img class="" src="/assets/google.png" alt="" height="30px"
+        /></a>
 
         <div class="search flex">
           <i class="fa fa-search"></i>
@@ -40,7 +42,9 @@
         </div>
 
         <div class="profile flex">
-          <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
+          <a href="/profile">
+            <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i
+          ></a>
         </div>
       </div>
     </section>
@@ -60,8 +64,11 @@
             <a href=""><p style="font-size: medium">Alex Khatri</p></a>
           </div>
 
-          <h4 class="sm-x" style="white-space: pre-wrap"><%=post.title%></h4>
-          <p class="sm-x" style="white-space: pre-wrap"><%=post.detail%></p>
+          <h4 class="post-title sm-x"><%=post.title%></h4>
+
+          <% if (post.detail && post.detail.trim() !== "") { %>
+          <p class="post-detail sm-x"><%=post.detail%></p>
+          <% } %>
 
           <div class="function flex">
             <a href=""
