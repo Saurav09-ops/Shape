@@ -29,7 +29,7 @@
         <div class="action">
           <ul class="flex">
             <li>
-              <a href=""
+              <a href="/compose"
                 >Create <i class="fa fa-plus" aria-hidden="true"></i
               ></a>
             </li>
@@ -49,6 +49,7 @@
 
     <section class="main">
       <div class="container">
+        <%posts.forEach((post)=>{%>
         <div class="post">
           <div class="personal-p flex">
             <a href=""
@@ -59,26 +60,9 @@
             <a href=""><p style="font-size: medium">Alex Khatri</p></a>
           </div>
 
-          <h4 class="sm-x">
-            [HIRING] Hiring Part-Time Customer Service Support – $3,000/Month –
-            Remote
-          </h4>
-          <p class="sm-x">
-            I’m looking for reliable and friendly part-time Customer Service
-            Support Representatives to join our growing team. This role is
-            remote, so you can work from anywhere — as long as you’re based in
-            one of these countries: USA | UK | France | Germany | Canada | Spain
-            Position Details: • Salary: $3,000 USD/month • Type: Part-time
-            (flexible hours, ~20 hrs/week) • Location: Remote, but must reside
-            in one of the listed countries • Start Date: ASAP Responsibilities:
-            • Respond to customer inquiries via email, chat, and/or phone •
-            Assist with order tracking, product questions, and basic
-            troubleshooting • Maintain a friendly and professional tone at all
-            times Requirements: • Strong written and verbal communication skills
-            in English (other languages are a plus) • Reliable internet
-            connection. You can comment here or send a DM, no previous
-            experience required.
-          </p>
+          <h4 class="sm-x" style="white-space: pre-wrap"><%=post.title%></h4>
+          <p class="sm-x" style="white-space: pre-wrap"><%=post.detail%></p>
+
           <div class="function flex">
             <a href=""
               ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
@@ -96,6 +80,7 @@
             >
           </div>
         </div>
+        <%})%>
       </div>
     </section>
   </body>

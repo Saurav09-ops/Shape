@@ -67,6 +67,29 @@ app.post("/signup", async (req, res) => {
   res.redirect("/");
 });
 
+app.get("/home", async (req, res) => {
+  let result = await db.query("Select * FROM posts ORDER BY created_at DESC");
+  let posts = result.rows;
+
+  res.render("home", { posts: posts });
+});
+
+app.get("/compose", (req, res) => {
+  res.render("compose");
+});
+
+app.post("/compose", async (req, res) => {
+  const title = req.body.title;
+  const detail = req.body.detail;
+
+  await db.query("INSERT INTO posts(title,detail) values($1,$2)", [
+    title,
+    detail,
+  ]);
+
+  res.redirect("/compose");
+});
+
 app.listen(port, (req, res) => {
   console.log(`Running on port http://localhost:${port}/`);
 });

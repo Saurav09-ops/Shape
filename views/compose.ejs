@@ -50,15 +50,34 @@
     <section class="compose">
       <div class="container">
         <div class="post">
-          <form action="" action>
+          <h2 class="my-1">Create Post</h2>
+          <form action="/compose" method="post">
             <div class="title">
-              <input id="title" type="text" name="title" placeholder="" />
+              <input
+                id="title"
+                type="text"
+                name="title"
+                placeholder=""
+                autocomplete="off"
+                maxlength="300"
+              />
               <label for="title"
                 >Title<span style="color: rgba(255, 0, 0, 0.295)"
                   >*</span
                 ></label
               >
             </div>
+            <p
+              style="
+                font-size: 12px;
+                margin: 1px 0;
+                text-align: end;
+                padding-right: 10px;
+                color: grey;
+              "
+            >
+              <span class="count">0</span>/300
+            </p>
             <div class="detail">
               <textarea
                 id="detail"
@@ -67,10 +86,12 @@
                 placeholder="Description...."
               ></textarea>
             </div>
-            <button class="post-b btn" type="submit">Post</button>
+            <button class="post-b disabled btn" type="submit">Post</button>
           </form>
         </div>
       </div>
     </section>
+
+    <script src="/js/home.js"></script>
   </body>
 </html>

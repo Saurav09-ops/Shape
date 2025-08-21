@@ -125,7 +125,8 @@ body {
 .post {
   background-color: var(--secondary-color);
   width: 70%;
-  margin: 0 auto;
+  margin: 1rem auto;
+  margin-top: 0;
   border-radius: 10px;
   padding: 1rem;
 }
@@ -152,7 +153,7 @@ body {
 }
 
 .compose .container {
-  min-height: 100px;
+  min-height: 100dvh;
   border: 1px solid rgba(0, 0, 0, 0.171);
   border-top: none;
   padding-top: 20px;
@@ -164,6 +165,7 @@ body {
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
+  border: 2px solid transparent;
 }
 
 .title input {
@@ -216,4 +218,17 @@ input:not(:placeholder-shown) + label {
 .post-b {
   border-radius: 20px;
   padding: 10px 15px;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.focus {
+  border: 2px solid rgba(0, 38, 255, 0.411);
+}
+
+.error {
+  border: 2px solid rgba(255, 0, 0, 0.411);
 }
