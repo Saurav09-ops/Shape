@@ -95,7 +95,9 @@ app.post("/signup", async (req, res) => {
 });
 
 app.get("/home", isAuthenticated, async (req, res) => {
-  let result = await db.query("Select * FROM posts ORDER BY created_at DESC");
+  let result = await db.query(
+    "SELECT users.first_name,users.last_name,posts.title,posts.detail,posts.created_at FROM users INNER JOIN posts ON users.id = posts.user_id ORDER BY created_at DESC"
+  );
   let posts = result.rows;
 
   res.render("home", { posts: posts });
@@ -106,21 +108,32 @@ app.get("/compose", isAuthenticated, (req, res) => {
 });
 
 app.post("/compose", isAuthenticated, async (req, res) => {
+  const user = req.user;
   const title = req.body.title.trim();
   const detail = req.body.detail.trim();
+  const id = user.id;
 
-  await db.query("INSERT INTO posts(title,detail) values($1,$2)", [
+  await db.query("INSERT INTO posts(title,detail,user_id) values($1,$2,$3)", [
     title,
     detail,
+    id,
   ]);
 
   res.redirect("/compose");
 });
 
 app.get("/profile", isAuthenticated, async (req, res) => {
-  let result = await db.query("Select * FROM posts ORDER BY created_at DESC");
+  const user = req.user;
+  let result = await db.query(
+    "Select * FROM posts WHERE user_id=$1 ORDER BY created_at DESC",
+    [user.id]
+  );
   let posts = result.rows;
-  res.render("profile", { posts: posts });
+  res.render("profile", {
+    posts: posts,
+    first: user.first_name,
+    last: user.last_name,
+  });
 });
 
 app.get("/delete/:id", isAuthenticated, async (req, res) => {

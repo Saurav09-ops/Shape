@@ -99,16 +99,17 @@ body {
 /* main */
 
 .main {
-  min-height: 100dvh;
+  height: 100dvh;
 }
 
 .main .container {
   position: relative;
-  min-height: 100px;
+  height: 100%;
   border: 1px solid rgba(0, 0, 0, 0.171);
   border-top: none;
   padding-top: 20px;
   padding-bottom: 20px;
+  overflow: auto;
 }
 
 .personal-p {
@@ -127,7 +128,7 @@ body {
 .post {
   position: relative;
   background-color: var(--secondary-color);
-  width: 70%;
+  width: min(800px, 90%);
   margin: 1rem auto;
   margin-top: 0;
   border-radius: 10px;
