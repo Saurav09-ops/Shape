@@ -1,4 +1,4 @@
-const titleInput = document.querySelector("#title");
+const titleInput = document.querySelector("#titleInput");
 const title = document.querySelector(".title");
 
 titleInput.addEventListener("input", () => {
