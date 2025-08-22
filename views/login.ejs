@@ -19,7 +19,11 @@
     <section class="hero flex">
       <div class="main container glass flex">
         <div class="login flex">
-          <div class="logo"></div>
+          <div class="logo">
+            <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger"><%= error[0] %></div>
+            <% } %>
+          </div>
           <div class="detail flex">
             <form action="/login" method="post">
               <div class="email flex my-1">
@@ -39,7 +43,7 @@
                 ></label>
                 <input
                   type="password"
-                  name="pass"
+                  name="password"
                   id="pass"
                   placeholder="Password"
                 />
@@ -140,6 +144,6 @@
         </div>
       </div>
     </section>
-    <script src="/js/home.js"></script>
+    <script src="/js/login.js"></script>
   </body>
 </html>
