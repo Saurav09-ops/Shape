@@ -53,8 +53,7 @@
     <section class="main">
       <div class="container">
         <div class="update"></div>
-
-        <%posts.forEach((post,i)=>{%>
+        <%if (profileUser.id===currentUser.id){%> <%posts.forEach((post,i)=>{%>
 
         <div class="post">
           <div class="personal-p flex">
@@ -64,7 +63,11 @@
               </div></a
             >
 
-            <a href=""><p style="font-size: medium"><%=first%> <%=last%></p></a>
+            <a href=""
+              ><p style="font-size: medium">
+                <%=currentUser.first_name%> <%=currentUser.last_name%>
+              </p></a
+            >
 
             <button
               class="update-btn btn"
@@ -74,10 +77,15 @@
             >
               <i class="fa fas fa-pencil-alt" aria-hidden="true"></i>
             </button>
-            <a href="/delete/<%=post.id%>" style="margin-left: 10px"
-              ><button class="btn">
-                <i class="fa fa-trash" aria-hidden="true"></i></button
-            ></a>
+            <form
+              action="/delete/<%=post.id%>"
+              method="post"
+              style="margin-left: 10px"
+            >
+              <button class="btn" type="submit">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </form>
           </div>
 
           <h4 class="post-title sm-x"><%=post.title%></h4>
@@ -103,7 +111,45 @@
             >
           </div>
         </div>
-        <%})%>
+        <%})%> <%}else{%> <% posts.forEach((post)=>{ %>
+        <div class="post">
+          <div class="personal-p flex">
+            <a href=""
+              ><div class="profile-pic">
+                <!-- <img class="" src="/assets/google.png" alt="" /> -->
+              </div></a
+            >
+            <a href=""
+              ><p style="font-size: medium">
+                <%=profileUser.first_name%> <%=profileUser.last_name%>
+              </p></a
+            >
+          </div>
+
+          <h4 class="post-title sm-x"><%=post.title%></h4>
+
+          <% if (post.detail && post.detail.trim() !== "") { %>
+          <p class="post-detail sm-x"><%=post.detail%></p>
+          <% } %>
+
+          <div class="function flex">
+            <a href=""
+              ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+              <span>1</span></a
+            >
+
+            <a href=""
+              ><i class="fa fa-thumbs-down" aria-hidden="true"></i>
+              <span>1</span></a
+            >
+
+            <a href=""
+              ><i class="fa fa-comment" aria-hidden="true"></i>
+              <span>1</span></a
+            >
+          </div>
+        </div>
+        <%})%> <%}%>
       </div>
     </section>
     <script>
