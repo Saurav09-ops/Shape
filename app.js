@@ -7,6 +7,7 @@ import { Strategy } from "passport-local";
 import env from "dotenv";
 import passport from "passport";
 import flash from "connect-flash";
+import GoogleStrategy from "passport-google-oauth2";
 
 const app = express();
 const port = 5000;
@@ -60,6 +61,22 @@ app.get("/", (req, res) => {
 app.post(
   "/login",
   passport.authenticate("local", {
+    successRedirect: "/home",
+    failureRedirect: "/",
+    failureFlash: true,
+  })
+);
+
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+app.get(
+  "/auth/google/home",
+  passport.authenticate("google", {
     successRedirect: "/home",
     failureRedirect: "/",
     failureFlash: true,
@@ -165,6 +182,16 @@ app.get("/profile/:id", isAuthenticated, async (req, res) => {
   }
 });
 
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+});
+
 app.post("/delete/:id", isAuthenticated, async (req, res) => {
   const id = req.params.id;
   const user = req.user;
@@ -185,6 +212,7 @@ app.post("/update/:id", isAuthenticated, async (req, res) => {
 });
 
 passport.use(
+  "local",
   new Strategy({ usernameField: "email" }, async function verify(
     email,
     password,
@@ -214,6 +242,36 @@ passport.use(
       return cb(err);
     }
   })
+);
+
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:5000/auth/google/home",
+      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+    },
+    async (accessToken, refreshToken, profile, cb) => {
+      try {
+        const result = await db.query("SELECT * FROM users WHERE email=$1", [
+          profile.email,
+        ]);
+        if (!result.rows[0]) {
+          const newUser = await db.query(
+            "INSERT INTO users(first_name,last_name,email,password) values($1,$2,$3,$4) RETURNING *;",
+            [profile.given_name, profile.family_name, profile.email, "google"]
+          );
+          cb(null, newUser.rows[0]);
+        } else {
+          cb(null, result.rows[0]);
+        }
+      } catch (err) {
+        cb(err);
+      }
+    }
+  )
 );
 
 passport.serializeUser((user, cb) => {

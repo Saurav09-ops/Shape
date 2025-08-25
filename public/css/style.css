@@ -23,13 +23,14 @@ body {
 /* top navbar */
 
 .nave-bar {
-  position: sticky;
+  position: fixed;
   top: 0;
-
+  width: 100%;
   background-color: white;
   font-weight: 500;
   border-bottom: 1px solid rgba(0, 0, 0, 0.171);
   z-index: 100;
+  overflow: hidden;
 }
 
 .nave-bar .container {
@@ -86,6 +87,7 @@ body {
 }
 
 .profile {
+  background-color: #ff7a30;
   width: 31.6px;
   height: 31.5px;
   border-radius: 50%;
@@ -96,18 +98,45 @@ body {
   box-shadow: 0 0 0 3px rgb(250, 1, 1);
 }
 
+.profile-menu {
+  position: absolute;
+  top: 53px;
+  right: 5px;
+  background-color: #465c88;
+  width: 6%;
+  height: 65px;
+  z-index: 200;
+  border-radius: 10px;
+  border-top-right-radius: 0;
+  background-color: var(--secondary-color);
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.312);
+}
+
+.profile-menu ul {
+  flex-direction: column;
+  gap: 8px;
+  justify-content: start;
+  padding: 5px;
+}
+
+.profile-menu ul li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+}
+.profile-menu ul li:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.613);
+}
+
 /* main */
 
 .main {
-  height: 91dvh;
+  min-height: 100dvh;
 }
 
 .main .container {
-  position: relative;
   height: 100%;
   border: 1px solid rgba(0, 0, 0, 0.171);
   border-top: none;
-  padding-top: 20px;
+  padding-top: 70px;
   padding-bottom: 20px;
   overflow: auto;
 }
@@ -126,7 +155,6 @@ body {
 }
 
 .post {
-  position: relative;
   background-color: var(--secondary-color);
   width: min(800px, 90%);
   margin: 1rem auto;
@@ -275,7 +303,7 @@ body {
   opacity: 0;
   width: 100%;
   background-color: #ff78304b;
-  border-radius: 10px;
+
   overflow: hidden;
   transition: 100ms ease-in-out;
   background-color: var(--secondary-color);
@@ -286,11 +314,15 @@ body {
   opacity: 1;
   height: 100%;
   padding: 1rem;
-
+  padding-top: 70px;
   z-index: 50;
 }
 
 .update form {
   width: min(1000px, 75%);
   margin: auto;
+}
+
+.overflow {
+  overflow: visible;
 }

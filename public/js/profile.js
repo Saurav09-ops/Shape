@@ -2,6 +2,11 @@ const update = document.querySelector(".update");
 const updateBtn = document.querySelectorAll(".update-btn");
 const posts = window.serverData.posts;
 
+document.querySelector(".profile").addEventListener("click", () => {
+  console.log(1);
+  document.querySelector(".nave-bar").classList.toggle("overflow");
+});
+
 updateBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     const id = btn.dataset.id;

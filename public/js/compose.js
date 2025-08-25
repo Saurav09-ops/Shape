@@ -1,6 +1,11 @@
 const titleInput = document.querySelector("#titleInput");
 const title = document.querySelector(".title");
 
+document.querySelector(".profile").addEventListener("click", () => {
+  console.log(1);
+  document.querySelector(".nave-bar").classList.toggle("overflow");
+});
+
 titleInput.addEventListener("input", () => {
   let count = titleInput.value.length;
   document.querySelector(".count").innerHTML = count;
