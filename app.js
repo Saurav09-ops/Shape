@@ -113,7 +113,7 @@ app.post("/signup", async (req, res) => {
 
 app.get("/home", isAuthenticated, async (req, res) => {
   let result = await db.query(
-    "SELECT users.id, users.first_name,users.last_name,posts.title,posts.detail,posts.created_at FROM users INNER JOIN posts ON users.id = posts.user_id ORDER BY created_at DESC"
+    "SELECT posts.id, users.first_name,users.last_name,posts.user_id,posts.title,posts.detail,posts.created_at FROM users INNER JOIN posts ON users.id = posts.user_id  ORDER BY created_at DESC"
   );
   let posts = result.rows;
 
@@ -190,6 +190,17 @@ app.get("/logout", (req, res) => {
       res.redirect("/");
     }
   });
+});
+
+app.get("/comment/:id", isAuthenticated, async (req, res) => {
+  let { id } = req.params;
+  let result = await db.query(
+    "SELECT posts.id, users.first_name,users.last_name,posts.user_id,posts.title,posts.detail,posts.created_at FROM users INNER JOIN posts ON users.id = posts.user_id WHERE posts.id=$1",
+    [id]
+  );
+  let post = result.rows[0];
+
+  res.render("comment", { post: post });
 });
 
 app.post("/delete/:id", isAuthenticated, async (req, res) => {

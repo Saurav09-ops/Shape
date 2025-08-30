@@ -44,12 +44,10 @@
   background-color: #374c76;
 }
 
-/* button {
+button {
   cursor: pointer;
-  padding: 10px 15px;
-  border-radius: 10px;
   border: none;
-} */
+}
 
 input {
   border: none;
@@ -251,4 +249,8 @@ ul {
 
 .p-5 {
   padding: 4rem;
+}
+
+.pb-1 {
+  padding-bottom: 1rem;
 }

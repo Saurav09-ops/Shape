@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/css/utilities.css" />
     <link rel="stylesheet" href="/css/style.css" />
 
-    <title>Shape||Build you community</title>
+    <title>Shape || Build you community</title>
   </head>
   <body>
     <!-- top navebar -->
@@ -55,44 +55,41 @@
 
     <!-- main -->
 
-    <section class="main">
+    <section class="main pb-1">
       <div class="container">
         <%posts.forEach((post)=>{%>
-        <div class="post">
-          <div class="personal-p flex">
-            <a href=""
-              ><div class="profile-pic">
+        <div class="post-cover">
+          <div class="post" onclick="window.location='/comment/<%=post.id%>'">
+            <a href="/profile/<%=post.user_id%>" class="personal-p flex">
+              <div class="profile-pic">
                 <!-- <img class="" src="/assets/google.png" alt="" /> -->
-              </div></a
-            >
-            <a href="/profile/<%=post.id%>"
-              ><p style="font-size: medium">
+              </div>
+              <p style="font-size: medium">
                 <%=post.first_name%> <%=post.last_name%>
-              </p></a
-            >
-          </div>
+              </p>
+            </a>
 
-          <h4 class="post-title sm-x"><%=post.title%></h4>
+            <h4 class="post-title sm-x"><%=post.title%></h4>
 
-          <% if (post.detail && post.detail.trim() !== "") { %>
-          <p class="post-detail sm-x"><%=post.detail%></p>
-          <% } %>
+            <% if (post.detail && post.detail.trim() !== "") { %>
+            <p class="post-detail sm-x"><%=post.detail%></p>
+            <% } %>
 
-          <div class="function flex">
-            <a href=""
-              ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
-              <span>1</span></a
-            >
-
-            <a href=""
-              ><i class="fa fa-thumbs-down" aria-hidden="true"></i>
-              <span>1</span></a
-            >
-
-            <a href=""
-              ><i class="fa fa-comment" aria-hidden="true"></i>
-              <span>1</span></a
-            >
+            <div class="function flex">
+              <button onclick="stopPropagation()">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                <span>1</span>
+              </button>
+              <button>
+                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                <span>1</span>
+              </button>
+              <button
+                onclick="event.stopPropagation();  window.location='/comment/<%=post.id%>'"
+              >
+                <i class="fa fa-comment" aria-hidden="true"></i> <span>1</span>
+              </button>
+            </div>
           </div>
         </div>
         <%})%>

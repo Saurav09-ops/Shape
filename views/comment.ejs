@@ -13,10 +13,11 @@
     <link rel="stylesheet" href="/css/utilities.css" />
     <link rel="stylesheet" href="/css/style.css" />
 
-    <title>Shape||Build you community</title>
+    <title>Shape || Build you community</title>
   </head>
   <body>
     <!-- top navebar -->
+
     <section class="nave-bar">
       <div class="container sm flex">
         <a href="/home"
@@ -50,91 +51,30 @@
           </div>
         </div>
       </div>
-      </div>
     </section>
 
     <!-- main -->
-    <section class="main">
+
+    <section class="main" style="min-height: fit-content">
       <div class="container">
-        <div class="update"></div>
-        <%if (profileUser.id===currentUser.id){%> <%posts.forEach((post,i)=>{%>
-        <div class="post-cover">
-        <div class="post">
-          <div class="personal-p flex">
-            <a href="/profile/<%=post.user_id%>"
-              ><div class="profile-pic">
-                <!-- <img class="" src="/assets/google.png" alt="" /> -->
-              </div></a
-            >
-
-            <a href="/profile/<%=post.user_id%>"
-              ><p style="font-size: medium">
-                <%=currentUser.first_name%> <%=currentUser.last_name%>
-              </p></a
-            >
-
-            <button
-              class="update-btn btn"
-              data-id="<%=post.id%>"
-              data-index="<%=i%>"
-              style="margin-left: auto"
-            >
-              <i class="fa fas fa-pencil-alt" aria-hidden="true"></i>
-            </button>
-            <form
-              action="/delete/<%=post.id%>"
-              method="post"
-              style="margin-left: 10px"
-            >
-              <button class="btn" type="submit">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-              </button>
-            </form>
-          </div>
-
-          <h4 class="post-title sm-x"><%=post.title%></h4>
-
-          <% if (post.detail && post.detail.trim() !== "") { %>
-          <p class="post-detail sm-x"><%=post.detail%></p>
-          <% } %>
-
-          <div class="function flex">
-              <button>
-                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                <span>1</span>
-              </button>
-              <button>
-                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                <span>1</span>
-              </button>
-              <button>
-                <i class="fa fa-comment" aria-hidden="true"></i> <span>1</span>
-              </button>
-            </div>
-        </div>
-        </div>
-        <%})%> <%}else{%> <% posts.forEach((post)=>{ %>
-          <div class="post-cover">
-        <div class="post">
-         
-
-          <a href="/profile/<%=post.user_id%>" class="personal-p flex">
+        <div class="post-cover comment-el">
+          <div class="post">
+            <a href="/profile/<%=post.user_id%>" class="personal-p flex">
               <div class="profile-pic">
                 <!-- <img class="" src="/assets/google.png" alt="" /> -->
               </div>
               <p style="font-size: medium">
-                <%=profileUser.first_name%> <%=profileUser.last_name%>
-                
+                <%=post.first_name%> <%=post.last_name%>
               </p>
             </a>
 
-          <h4 class="post-title sm-x"><%=post.title%></h4>
+            <h4 class="post-title sm-x"><%=post.title%></h4>
 
-          <% if (post.detail && post.detail.trim() !== "") { %>
-          <p class="post-detail sm-x"><%=post.detail%></p>
-          <% } %>
+            <% if (post.detail && post.detail.trim() !== "") { %>
+            <p class="post-detail sm-x"><%=post.detail%></p>
+            <% } %>
 
-         <div class="function flex">
+            <div class="function flex">
               <button>
                 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                 <span>1</span>
@@ -143,18 +83,68 @@
                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                 <span>1</span>
               </button>
-              <button>
+              <button class="discuss-btn">
                 <i class="fa fa-comment" aria-hidden="true"></i> <span>1</span>
               </button>
             </div>
+          </div>
+
+          <div class="comment cmt">
+            <p class="temp">Discuss..</p>
+            <textarea
+              type="text"
+              id="commentInput"
+              name="comment"
+              autocomplete="off"
+            ></textarea>
+            <div class="comment-func">
+              <button class="btn cancel" onclick="event.stopPropagation()">
+                Cancel
+              </button>
+              <button class="btn" style="margin-right: 5px">Submit</button>
+            </div>
+          </div>
         </div>
-        </div>
-        <%})%> <%}%>
       </div>
     </section>
-    <script>
-      window.serverData = { posts: <%- JSON.stringify(posts) %> };
-    </script>
-    <script src="/js/profile.js"></script>
+
+    <section class="discuss pb-1">
+      <div class="container">
+        <div class="discuss-box">
+          <div
+            class="discuss-post"
+            onclick="window.location='/comment/<%=post.id%>'"
+          >
+            <a href="/profile/<%=post.user_id%>" class="personal-p flex">
+              <div class="profile-pic">
+                <!-- <img class="" src="/assets/google.png" alt="" /> -->
+              </div>
+              <p style="font-size: medium">
+                <%=post.first_name%> <%=post.last_name%>
+              </p>
+            </a>
+
+            <p class="discuss-content sm-x">
+              Hey everyone! 👋 I’m looking for motivated people to help me with
+              posting & commenting on Reddit. Super simple tasks - full
+              step-by-step guide provided so you know exactly what to do. 📘
+            </p>
+
+            <div class="discuss-reaction flex">
+              <button onclick="stopPropagation()">
+                <i class="fa fa-thumbs-up fa-sm" aria-hidden="true"></i>
+                <span>1</span>
+              </button>
+              <button>
+                <i class="fa fa-thumbs-down fa-sm" aria-hidden="true"></i>
+                <span>1</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/js/comment.js"></script>
   </body>
 </html>
