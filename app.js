@@ -141,18 +141,23 @@ app.post("/compose", isAuthenticated, async (req, res) => {
 
 app.get("/profile", isAuthenticated, async (req, res) => {
   const user = req.user;
-  const result = await db.query(
-    "Select * FROM posts WHERE user_id=$1 ORDER BY created_at DESC",
-    [user.id]
-  );
-  const posts = result.rows;
-  const profileUser = req.user;
 
-  res.render("profile", {
-    posts: posts,
-    profileUser: profileUser,
-    currentUser: user,
-  });
+  try {
+    const result = await db.query(
+      "Select * FROM posts WHERE user_id=$1 ORDER BY created_at DESC",
+      [user.id]
+    );
+    const posts = result.rows;
+    const profileUser = req.user;
+
+    res.render("profile", {
+      posts: posts,
+      profileUser: profileUser,
+      currentUser: user,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get("/profile/:id", isAuthenticated, async (req, res) => {

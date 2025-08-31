@@ -1,5 +1,15 @@
 /* /////////////////////////////////////////////////////////////////////////////////////////// */
 
+.alert {
+  text-align: end;
+
+  color: rgba(221, 0, 0, 0.712);
+  font-size: small;
+  height: 15px;
+  margin: 2px 0;
+  padding-right: 10px;
+}
+
 .container {
   width: min(1200px, 90%);
   margin: 0 auto;
@@ -47,6 +57,7 @@
 button {
   cursor: pointer;
   border: none;
+  background-color: transparent;
 }
 
 input {
@@ -208,6 +219,14 @@ ul {
 
 .m-5 {
   margin: 4rem;
+}
+
+.ml-s {
+  margin-left: 0.5rem;
+}
+
+.mb-s {
+  margin-bottom: 1.3rem;
 }
 
 /* padding */

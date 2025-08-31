@@ -2,9 +2,19 @@ const update = document.querySelector(".update");
 const updateBtn = document.querySelectorAll(".update-btn");
 const posts = window.serverData.posts;
 
-document.querySelector(".profile").addEventListener("click", () => {
-  console.log(1);
+document.querySelector(".profile").addEventListener("click", (event) => {
+  event.stopPropagation();
   document.querySelector(".nave-bar").classList.toggle("overflow");
+});
+
+document.querySelector(".p-opt").addEventListener("click", (event) => {
+  event.stopPropagation();
+  document.querySelector(".p-optD").classList.toggle("displayBlock");
+});
+
+document.addEventListener("click", () => {
+  document.querySelector(".p-optD").classList.remove("displayBlock");
+  document.querySelector(".nave-bar").classList.remove("overflow");
 });
 
 updateBtn.forEach((btn) => {

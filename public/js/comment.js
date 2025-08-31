@@ -1,9 +1,13 @@
-document.querySelector(".profile").addEventListener("click", () => {
+document.querySelector(".profile").addEventListener("click", (event) => {
+  event.stopPropagation();
   document.querySelector(".nave-bar").classList.toggle("overflow");
 });
 
+document.addEventListener("click", () => {
+  document.querySelector(".nave-bar").classList.remove("overflow");
+});
+
 document.querySelector(".comment").addEventListener("click", () => {
-  console.log("open");
   document.querySelector(".comment").classList.remove("cmt");
   document.querySelector(".temp").classList.add("displayOff");
   document
@@ -13,7 +17,6 @@ document.querySelector(".comment").addEventListener("click", () => {
 });
 
 document.querySelector(".discuss-btn").addEventListener("click", () => {
-  console.log("open");
   document.querySelector(".comment").classList.remove("cmt");
   document.querySelector(".temp").classList.add("displayOff");
   document
@@ -23,7 +26,6 @@ document.querySelector(".discuss-btn").addEventListener("click", () => {
 });
 
 document.querySelector(".cancel").addEventListener("click", () => {
-  console.log("close");
   document.querySelector(".comment-func").classList.remove("displayOn");
   document.getElementById("commentInput").removeAttribute("style");
   document.querySelector(".temp").classList.remove("displayOff");

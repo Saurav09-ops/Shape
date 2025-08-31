@@ -1,9 +1,13 @@
 const titleInput = document.querySelector("#titleInput");
 const title = document.querySelector(".title");
 
-document.querySelector(".profile").addEventListener("click", () => {
-  console.log(1);
+document.querySelector(".profile").addEventListener("click", (event) => {
+  event.stopPropagation();
   document.querySelector(".nave-bar").classList.toggle("overflow");
+});
+
+document.addEventListener("click", () => {
+  document.querySelector(".nave-bar").classList.remove("overflow");
 });
 
 titleInput.addEventListener("input", () => {

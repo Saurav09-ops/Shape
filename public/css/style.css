@@ -58,12 +58,12 @@ body {
 
 .search:focus-within {
   width: 350px;
-  border-color: #ff7a30;
+  border-color: #300a68;
   background-color: #e7e7e7;
 }
 
 .search:focus-within i {
-  color: #ff7a30;
+  color: #300a68;
 }
 
 .action {
@@ -84,19 +84,21 @@ body {
 }
 
 .action ul li a:hover {
-  background-color: #ff7a30;
+  background-color: #e8e8e8a4;
 }
 
 .profile {
   background-color: #ff7a30;
-  width: 31.6px;
-  height: 31.5px;
-  border-radius: 50%;
+  inline-size: 30px;
+  aspect-ratio: 1;
+  border-radius: 100vw;
+  object-fit: cover;
+
   transition: 50ms;
 }
 
 .profile:hover {
-  box-shadow: 0 0 0 3px rgb(250, 1, 1);
+  box-shadow: 0 0 0 3px #d0d0d0;
 }
 
 .profile-menu {
@@ -104,13 +106,13 @@ body {
   top: 53px;
   right: 5px;
 
-  width: 6%;
+  width: max(80px, 5%);
   height: 65px;
   z-index: 200;
   border-radius: 10px;
   border-top-right-radius: 0;
   background-color: var(--light-color);
-  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.312);
+  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.127);
 }
 
 .profile-menu ul {
@@ -145,9 +147,10 @@ body {
   width: min(750px, 90%);
   margin: auto;
   padding: 0.3rem 0;
-  border: 1px solid rgba(0, 0, 0, 0.126);
+  border: 1px solid rgba(0, 0, 0, 0.104);
   border-left: none;
   border-right: none;
+  border-top: none;
   cursor: pointer;
 }
 
@@ -158,7 +161,7 @@ body {
 }
 
 .post:hover {
-  background-color: #e7e7e771;
+  background-color: #e7e7e73b;
 }
 
 .personal-p {
@@ -320,6 +323,102 @@ body {
   border: 2px solid rgba(255, 0, 0, 0.411);
 }
 
+/* profile */
+
+.profile-hero {
+  padding: 0.5rem;
+  flex-direction: column;
+  width: min(750px, 90%);
+  margin: auto;
+  align-items: start;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.075);
+  margin-bottom: 1rem;
+}
+
+.p-pic {
+  width: 70px;
+  aspect-ratio: 1;
+  border-radius: 100vw;
+  background-color: #465c88;
+  margin-bottom: 1.4rem;
+}
+
+.profile-p {
+  background-color: #a5bded;
+}
+
+.p-opt {
+  position: relative;
+  inline-size: 25px;
+  aspect-ratio: 1;
+
+  border-radius: 100vw;
+}
+
+.p-opt:hover {
+  background-color: #0000001b;
+}
+
+.p-optD {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: white;
+  width: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px 3px rgba(128, 128, 128, 0.193);
+}
+
+.p-opt-btn {
+  width: 100%;
+  padding: 0.5rem;
+  text-align: start;
+  background-color: transparent;
+}
+
+.p-opt-btn i {
+  margin: 0 0.4rem;
+}
+
+.p-opt-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+.profile-nav {
+  gap: 10px;
+  width: 100%;
+  justify-content: start;
+  height: fit-content;
+}
+
+.profile-nav .btn {
+  color: black;
+  background-color: transparent;
+  border-radius: 20px;
+}
+
+.profile-nav a {
+  /* display: inline-block; */
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  background-color: transparent;
+  color: black;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.profile-nav a:hover {
+  text-decoration: underline;
+}
+
+.profile-nav a:active {
+  background-color: var(--light-color);
+}
+
 /* PROFILE-UPDATE */
 
 .update {
@@ -427,6 +526,10 @@ body {
 
 .displayOff {
   display: none;
+}
+
+.displayBlock {
+  display: block;
 }
 /* fffff */
 

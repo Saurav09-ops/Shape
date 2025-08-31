@@ -19,14 +19,15 @@
     <section class="hero flex">
       <div class="main container glass flex">
         <div class="login flex">
-          <div class="logo">
-            <% if (error && error.length > 0) { %>
-            <div class="alert alert-danger"><%= error[0] %></div>
-            <% } %>
+          <div class="logo flex">
+            <img src="/assets/loginshape.png" alt="" />
           </div>
           <div class="detail flex">
+            <div>
+              <h4 style="color: black">Login to your account</h4>
+            </div>
             <form action="/login" method="post">
-              <div class="email flex my-1">
+              <div class="email flex my-2">
                 <label for="email"
                   ><i class="fa fa-user" aria-hidden="true"></i>
                 </label>
@@ -48,6 +49,12 @@
                   placeholder="Password"
                 />
               </div>
+
+              <% if (error && error.length > 0) { %>
+              <div class="alert alert-danger"><%= error[0] %></div>
+              <% }else{%>
+              <div class="alert alert-danger"></div>
+              <%} %>
 
               <button type="submit" class="btn my-1 esm">Log in</button>
             </form>

@@ -20,7 +20,7 @@
     <section class="nave-bar">
       <div class="container sm flex">
         <a href="/home"
-          ><img class="" src="/assets/google.png" alt="" height="30px"
+          ><img class="" src="/assets/shape.png" alt="" height="30px"
         /></a>
 
         <div class="search flex">
@@ -53,13 +53,65 @@
       </div>
     </section>
 
+
+    
+
+
+
+
+
     <!-- main -->
     <section class="main">
       <div class="container">
         <div class="update"></div>
+        <%if (profileUser.id===currentUser.id){%>
+         <div class="profile-hero flex">
+             <div class="profile-P flex">
+              <div class="p-pic">
+                 <!-- <img src="" alt=""> -->
+              </div>
+              <div class="p-name ml-s">
+                <h3 style="font-size:1.5rem;"><%=profileUser.first_name%> <%=profileUser.last_name%></h3>
+                <p class="mb-s"  style="font-size: small;font-style: italic;color: rgba(0, 0, 0, 0.475);">UniqueName</p>
+                </div>
+             </div>
+             <div class="profile-nav flex">
+             
+             
+              
+              <a href="">Post</a>
+              <a href="">Comment</a>
+              <a href="">Saved</a>
+              <a href="">Like</a>
+                </div>
+              </div>
+             <%}else{%> 
+              <div class="profile-hero flex">
+             <div class="profile-P flex">
+              <div class="p-pic">
+                 <!-- <img src="" alt=""> -->
+              </div>
+              <div class="p-name ml-s">
+                <h3 style="font-size:1.5rem;"><%=profileUser.first_name%> <%=profileUser.last_name%></h3>
+                <p class="mb-s"  style="font-size: small;font-style: italic;color: rgba(0, 0, 0, 0.475)">UniqueName</p>
+                </div>
+             </div>
+             <div class="profile-nav flex">
+             
+             
+              
+              <a href="">Post</a>
+              <a href="">Comment</a>
+              
+                </div>
+              </div>
+              <%}%>
+              
+       
+
         <%if (profileUser.id===currentUser.id){%> <%posts.forEach((post,i)=>{%>
-        <div class="post-cover">
-        <div class="post">
+        <div class="post-cover" >
+        <div class="post" >
           <div class="personal-p flex">
             <a href="/profile/<%=post.user_id%>"
               ><div class="profile-pic">
@@ -72,24 +124,29 @@
                 <%=currentUser.first_name%> <%=currentUser.last_name%>
               </p></a
             >
-
-            <button
-              class="update-btn btn"
+             <div class="p-opt flex" style="margin-left: auto">
+              <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+              <div class="p-optD">
+               <button
+              class="update-btn p-opt-btn"
               data-id="<%=post.id%>"
               data-index="<%=i%>"
-              style="margin-left: auto"
+              
             >
-              <i class="fa fas fa-pencil-alt" aria-hidden="true"></i>
+              <i class="fa fas fa-pencil-alt" aria-hidden="true"></i> Edit post detail
             </button>
             <form
               action="/delete/<%=post.id%>"
               method="post"
-              style="margin-left: 10px"
+              
             >
-              <button class="btn" type="submit">
-                <i class="fa fa-trash" aria-hidden="true"></i>
+              <button  class="p-opt-btn" type="submit">
+                <i class="fa fa-trash" aria-hidden="true"></i> Delete
               </button>
             </form>
+             </div>
+            </div>
+           
           </div>
 
           <h4 class="post-title sm-x"><%=post.title%></h4>
@@ -114,19 +171,37 @@
         </div>
         </div>
         <%})%> <%}else{%> <% posts.forEach((post)=>{ %>
-          <div class="post-cover">
-        <div class="post">
+          <div class="post-cover" >
+        <div class="post" >
          
 
-          <a href="/profile/<%=post.user_id%>" class="personal-p flex">
-              <div class="profile-pic">
+          <div class="personal-p flex">
+            <a href="/profile/<%=post.user_id%>"
+              ><div class="profile-pic">
                 <!-- <img class="" src="/assets/google.png" alt="" /> -->
-              </div>
-              <p style="font-size: medium">
+              </div></a
+            >
+
+            <a href="/profile/<%=post.user_id%>"
+              ><p style="font-size: medium">
                 <%=profileUser.first_name%> <%=profileUser.last_name%>
-                
-              </p>
-            </a>
+              </p></a
+            >
+             <div class="p-opt flex" style="margin-left: auto">
+              <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+              <div class="p-optD">
+               <button
+              class=" p-opt-btn"
+              
+              
+            >
+              <i class="fa fa-bookmark" aria-hidden="true"></i> Save
+            </button>
+            
+             </div>
+            </div>
+           
+          </div>
 
           <h4 class="post-title sm-x"><%=post.title%></h4>
 
