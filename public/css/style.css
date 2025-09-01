@@ -139,8 +139,9 @@ body {
   height: 100%;
 
   padding-top: 70px;
-
+  width: min(1000px, 90%);
   overflow: auto;
+  background-color: #8bc4f5;
 }
 
 .post-cover {
@@ -152,6 +153,7 @@ body {
   border-right: none;
   border-top: none;
   cursor: pointer;
+  background-color: #a5bded;
 }
 
 .post {

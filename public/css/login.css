@@ -55,7 +55,7 @@ body {
 }
 
 .logo img {
-  width: min(400px, 70%);
+  width: min(400px, 65%);
   transform: rotate(45deg);
 }
 

@@ -45,7 +45,7 @@ updateBtn.forEach((btn) => {
 
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // removes this if you want instant scroll
+      behavior: "smooth",
     });
 
     document
