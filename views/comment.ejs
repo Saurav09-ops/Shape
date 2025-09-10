@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/utilities.css" />
+    <link rel="stylesheet" href="/css/nav.css" />
+    <link rel="stylesheet" href="/css/comment.css" />
+
+    <title>Shape || Build you community</title>
+  </head>
+  <body>
+    <!-- top navebar -->
+
+    <section class="nave-bar">
+      <div class="container sm flex">
+        <a href="/home"
+          ><img class="" src="/assets/shape.png" alt="" height="30px"
+        /></a>
+
+        <div class="search flex">
+          <i class="fa fa-search"></i>
+          <input type="text" name="search" placeholder="Search" />
+        </div>
+
+        <div class="action">
+          <ul class="flex">
+            <li>
+              <a href="/compose"
+                >Create <i class="fa fa-plus" aria-hidden="true"></i
+              ></a>
+            </li>
+            <li>
+              <a href=""><i class="fa fa-bell" aria-hidden="true"></i></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="profile">
+          <div class="profile-menu">
+            <ul class="flex">
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- main -->
+
+    <section class="main">
+      <div class="main-navL">
+        <button class="btn MnavL-btn">
+          <i class="fa fa-bars fa-lg" aria-hidden="true "></i>
+        </button>
+        <div class="demo">
+          <div class="demo-j flex">
+            <a href="/home"
+              ><i
+                class="fa fa-home"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Home</a
+            >
+            <a href=""
+              ><i
+                class="fa fa-line-chart"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Popular</a
+            >
+            <a href=""
+              ><i
+                class="fa fa-users"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Community</a
+            >
+            <a href=""
+              ><i
+                class="fa fa-search-plus"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Explore</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="container" style="padding-right: 15px">
+        <div class="post-wrapper">
+          <div class="post-cover comment-el">
+            <div class="post">
+              <a href="/profile/<%=post.user_id%>" class="personal-p flex">
+                <div class="profile-pic">
+                  <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                </div>
+                <p style="font-size: medium">
+                  <%=post.first_name%> <%=post.last_name%>
+                </p>
+              </a>
+
+              <h4 class="post-title sm-x"><%=post.title%></h4>
+
+              <% if (post.detail && post.detail.trim() !== "") { %>
+              <p class="post-detail sm-x"><%=post.detail%></p>
+              <% } %>
+
+              <div class="function flex">
+                <button>
+                  <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                  <span>1</span>
+                </button>
+                <button>
+                  <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                  <span>1</span>
+                </button>
+                <button class="discuss-btn">
+                  <i class="fa fa-comment" aria-hidden="true"></i>
+                  <span>1</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="comment cmt">
+              <p class="temp">Discuss..</p>
+              <textarea
+                type="text"
+                id="commentInput"
+                name="comment"
+                autocomplete="off"
+              ></textarea>
+              <div class="comment-func">
+                <button class="btn cancel" onclick="event.stopPropagation()">
+                  Cancel
+                </button>
+                <button class="btn" style="margin-right: 5px">Submit</button>
+              </div>
+            </div>
+          </div>
+          <section class="discuss pb-1">
+            <div class="container" style="margin: 0">
+              <div class="discuss-box">
+                <div
+                  class="discuss-post"
+                  onclick="window.location='/comment/<%=post.id%>'"
+                >
+                  <a href="/profile/<%=post.user_id%>" class="personal-p flex">
+                    <div class="profile-pic">
+                      <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                    </div>
+                    <p style="font-size: medium">
+                      <%=post.first_name%> <%=post.last_name%>
+                    </p>
+                  </a>
+
+                  <p class="discuss-content sm-x">
+                    Hey everyone! 👋 I’m looking for motivated people to help me
+                    with posting & commenting on Reddit. Super simple tasks -
+                    full step-by-step guide provided so you know exactly what to
+                    do. 📘
+                  </p>
+
+                  <div class="discuss-reaction flex">
+                    <button onclick="stopPropagation()">
+                      <i class="fa fa-thumbs-up fa-sm" aria-hidden="true"></i>
+                      <span>1</span>
+                    </button>
+                    <button>
+                      <i class="fa fa-thumbs-down fa-sm" aria-hidden="true"></i>
+                      <span>1</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <div class="nav-r">
+        <div class="main-navR"></div>
+      </div>
+    </section>
+
+    <script src="/js/comment.js"></script>
+  </body>
+</html>

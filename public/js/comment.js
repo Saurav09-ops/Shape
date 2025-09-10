@@ -1,0 +1,40 @@
+document.querySelector(".profile").addEventListener("click", (event) => {
+  event.stopPropagation();
+  document.querySelector(".nave-bar").classList.toggle("overflow");
+});
+
+document.addEventListener("click", () => {
+  document.querySelector(".nave-bar").classList.remove("overflow");
+});
+
+document.querySelector(".comment").addEventListener("click", () => {
+  document.querySelector(".comment").classList.remove("cmt");
+  document.querySelector(".temp").classList.add("displayOff");
+  document
+    .getElementById("commentInput")
+    .setAttribute("style", "display:block");
+  document.querySelector(".comment-func").classList.add("displayOn");
+});
+
+document.querySelector(".discuss-btn").addEventListener("click", () => {
+  document.querySelector(".comment").classList.remove("cmt");
+  document.querySelector(".temp").classList.add("displayOff");
+  document
+    .getElementById("commentInput")
+    .setAttribute("style", "display:block");
+  document.querySelector(".comment-func").classList.add("displayOn");
+});
+
+document.querySelector(".cancel").addEventListener("click", () => {
+  document.querySelector(".comment-func").classList.remove("displayOn");
+  document.getElementById("commentInput").removeAttribute("style");
+  document.querySelector(".temp").classList.remove("displayOff");
+  document.querySelector(".comment").classList.add("cmt");
+  document.getElementById("commentInput").value = "";
+});
+
+document.querySelector(".MnavL-btn").addEventListener("click", () => {
+  document.querySelector(".main-navL").classList.toggle("main-navL-width");
+  document.querySelector(".MnavL-btn").classList.toggle("btnL");
+  document.querySelector(".demo").classList.toggle("demoOP");
+});
