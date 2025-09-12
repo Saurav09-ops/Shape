@@ -37,13 +37,10 @@
 }
 
 .main .container {
-  display: flex;
   height: 100%;
   flex: 1;
 
   overflow: auto;
-
-  justify-content: center;
 }
 
 .nav-r {
@@ -61,8 +58,9 @@
 }
 
 .post-wrapper {
-  max-width: 745px;
+  max-width: 769px;
   padding-top: 70px;
+  margin-left: auto;
 }
 
 .demo {
@@ -256,6 +254,11 @@
 /* fffff */
 
 .discuss .container {
+  display: flex;
+  height: 100%;
+  flex: 1;
+  overflow: auto;
+  flex-direction: column;
 }
 
 .discuss-box {

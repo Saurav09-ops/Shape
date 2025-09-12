@@ -145,43 +145,23 @@
                 <button class="btn cancel" onclick="event.stopPropagation()">
                   Cancel
                 </button>
-                <button class="btn" style="margin-right: 5px">Submit</button>
+                <button
+                  class="btn cmt-submit"
+                  data-id="<%=post.id%>"
+                  style="margin-right: 5px"
+                >
+                  Submit
+                </button>
               </div>
             </div>
           </div>
           <section class="discuss pb-1">
-            <div class="container" style="margin: 0">
+            <div class="container cmt-fill" style="margin: 0">
               <div class="discuss-box">
-                <div
-                  class="discuss-post"
-                  onclick="window.location='/comment/<%=post.id%>'"
-                >
-                  <a href="/profile/<%=post.user_id%>" class="personal-p flex">
-                    <div class="profile-pic">
-                      <!-- <img class="" src="/assets/google.png" alt="" /> -->
-                    </div>
-                    <p style="font-size: medium">
-                      <%=post.first_name%> <%=post.last_name%>
-                    </p>
-                  </a>
-
-                  <p class="discuss-content sm-x">
-                    Hey everyone! 👋 I’m looking for motivated people to help me
-                    with posting & commenting on Reddit. Super simple tasks -
-                    full step-by-step guide provided so you know exactly what to
-                    do. 📘
+                <div class="discuss-post">
+                  <p class="discuss-content sm-x text-center">
+                    Start the Discussion!!
                   </p>
-
-                  <div class="discuss-reaction flex">
-                    <button onclick="stopPropagation()">
-                      <i class="fa fa-thumbs-up fa-sm" aria-hidden="true"></i>
-                      <span>1</span>
-                    </button>
-                    <button>
-                      <i class="fa fa-thumbs-down fa-sm" aria-hidden="true"></i>
-                      <span>1</span>
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>

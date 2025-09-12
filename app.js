@@ -44,6 +44,7 @@ app.use((req, res, next) => {
 });
 
 app.set("view engine", "ejs");
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
@@ -213,11 +214,60 @@ app.get("/comment/:id", isAuthenticated, async (req, res) => {
   res.render("comment", { post: post });
 });
 
+//////////
+
+app.post("/comment", isAuthenticated, async (req, res) => {
+  let { comment } = req.body;
+  let userId = req.user.id;
+  let { postId } = req.body;
+
+  try {
+    await db.query(
+      "INSERT INTO comment(user_id,post_id,comment) values($1,$2,$3)",
+      [userId, postId, comment]
+    );
+  } catch (err) {
+    res.status(500).json({ status: "Faliure" });
+    console.log(err);
+  }
+  res.status(201).json({ status: "success" });
+});
+
+app.get("/action/:id", async (req, res) => {
+  let { id: postId } = req.params;
+
+  try {
+    let result = await db.query(
+      "SELECT users.id,users.first_name,users.last_name,comment.comment,comment.created_at FROM comment INNER JOIN users ON users.id = comment.user_id WHERE comment.post_id=$1::int ORDER BY comment.created_at DESC ;",
+      [postId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ status: "No comment" });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ status: "Failure" });
+    console.log(err);
+  }
+});
+
+//////////////////////////
+
 app.post("/delete/:id", isAuthenticated, async (req, res) => {
   const id = req.params.id;
   const user = req.user;
-  await db.query(`DELETE FROM posts WHERE id=$1 And user_id=$2`, [id, user.id]);
-  res.redirect("/profile");
+  try {
+    await db.query("DELETE FROM comment Where post_id=$1", [id]);
+
+    await db.query(`DELETE FROM posts WHERE id=$1 And user_id=$2`, [
+      id,
+      user.id,
+    ]);
+    res.redirect("/profile");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.post("/update/:id", isAuthenticated, async (req, res) => {
