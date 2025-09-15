@@ -120,15 +120,22 @@
                 </div>
              </div>
              <div class="profile-nav flex">
+                 <input type="radio" id="option1" name="nav_el"/>
+                  <label for="option1"><a href="/profile/<%=profileUser.id%>">Post</a></label>
              
              
-              
-              <a href="">Post</a>
-              <a href="">Comment</a>
-              <a href="">Saved</a>
-              <a href="">Like</a>
-                </div>
+                  <input type="radio" id="option2" name="nav_el" />
+                 <label for="option2">Comment</label>
+             
+             
+                  <input type="radio" id="option3" name="nav_el" />
+                 <label for="option3">Saved</label>
+             
+             
+                 <input type="radio" id="option4" name="nav_el" />
+                 <label for="option4">Like</label>
               </div>
+            </div>
              <%}else{%> 
               <div class="profile-hero flex">
              <div class="profile-P flex">
@@ -144,14 +151,23 @@
              
              
               
-              <a href="">Post</a>
-              <a href="">Comment</a>
+             <input type="radio" id="option1" name="nav_el"/>
+             <label for="option1"><a href="/profile/<%=profileUser.id%>">Post</a></label>
+             
+             <input type="radio" id="option2" name="nav_el" />
+             <label for="option2">Comment</label>
+               
               
                 </div>
               </div>
               <%}%>
               
-       
+       <%if(posts.length===0){%>
+        <div class="post-cover text-center" style="border: none; margin-top: 3rem; font-size: larger; font-weight: 400;">
+  <%=profileUser.first_name%> <%=profileUser.last_name%> haven't posted yet 🤓
+</div>
+
+        <%}else{%>
         
         <%if (profileUser.id===currentUser.id){%> <%posts.forEach((post,i)=>{%>
         <div class="post-cover" >
@@ -269,6 +285,7 @@
         </div>
         </div>
         <%})%> <%}%>
+        <%}%>
         </div>
       </div>
       <div class="nav-r">

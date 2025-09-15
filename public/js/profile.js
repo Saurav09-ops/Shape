@@ -1,5 +1,11 @@
+pageState();
 const check = localStorage.getItem("navState");
+const check2 = localStorage.getItem("prState");
 navState(check);
+
+if (!check2) {
+  profileNav();
+}
 
 const update = document.querySelector(".update");
 const updateBtn = document.querySelectorAll(".update-btn");
@@ -7,7 +13,7 @@ let optBtn = [];
 let optBtnB = [];
 optBtn = document.querySelectorAll(".p-opt");
 optBtnB = document.querySelectorAll(".p-optD");
-console.log(optBtn);
+
 const posts = window.serverData.posts;
 
 document.querySelector(".profile").addEventListener("click", (event) => {
@@ -107,4 +113,15 @@ function navState(a) {
       document.querySelector(".MnavL-btn").removeAttribute("style");
     }, 200);
   }
+}
+
+function profileNav() {
+  document.getElementById("option1").checked = true;
+  localStorage.setItem("prState", 1);
+}
+function pageState() {
+  if (performance.getEntriesByType("navigation")[0].type === "reload") {
+    return localStorage.setItem("prState", 1);
+  }
+  return localStorage.removeItem("prState");
 }

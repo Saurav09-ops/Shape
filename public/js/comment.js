@@ -2,8 +2,10 @@ const check = localStorage.getItem("navState");
 navState(check);
 
 const cmtBtn = document.querySelector(".cmt-submit");
-
-releventcmt();
+let optBtn = [];
+let optBtnB = [];
+let userId;
+releventCmt();
 
 document.querySelector(".profile").addEventListener("click", (event) => {
   event.stopPropagation();
@@ -11,6 +13,9 @@ document.querySelector(".profile").addEventListener("click", (event) => {
 });
 
 document.addEventListener("click", () => {
+  optBtnB.forEach((btn) => {
+    btn.classList.remove("displayBlock");
+  });
   document.querySelector(".nave-bar").classList.remove("overflow");
 });
 
@@ -116,19 +121,75 @@ cmtBtn.addEventListener("click", async () => {
       document.getElementById("commentInput").placeholder = "Discuss..";
     }, 800);
   }
-  releventcmt();
+  await releventCmt();
 });
 
-async function releventcmt() {
+async function releventCmt() {
   let a = "";
   const id = cmtBtn.dataset.id;
-  let result = await fetch(`http://localhost:5000/action/${id}`);
-  let data = await result.json();
-  console.log(data);
-  data.forEach((cmt) => {
-    a += `<div class="discuss-box">
+  let result = await fetch(`http://localhost:5000/action/${id}`, {
+    method: "GET",
+    credentials: "include",
+  });
+  let value = await result.json();
+  let data = value.data;
+  userId = value.user_id;
+  if (!data) {
+    a = `<div class="discuss-box">
                 <div class="discuss-post">
-    <a href="/profile/${cmt.id}" class="personal-p flex">
+                  <p class="discuss-content sm-x text-center">
+                    Start the Discussion!!
+                  </p>
+                </div>
+              </div>`;
+    return (document.querySelector(".cmt-fill").innerHTML = a);
+  }
+  data.forEach((cmt) => {
+    if (cmt.user_id === userId) {
+      a += `<div class="discuss-box">
+                <div class="discuss-post">
+                  <div class="personal-p flex">
+                    <a href="/profile/${cmt.user_id}"
+                      ><div class="profile-pic">
+                        <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                      </div></a
+                    >
+
+                    <a href="/profile/${cmt.user_id}"
+                      ><p style="font-size: medium">
+                        ${cmt.first_name} ${cmt.last_name}
+                      </p></a
+                    >
+                    <div class="p-opt flex" style="margin-left: auto">
+                      <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                      <div class="p-optD">
+                            <button class="p-opt-btn" onclick="event.stopPropagation();cmtDelete(${cmt.cmt_id});" >
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                          </button>
+                        
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="discuss-content sm-x">${cmt.comment}</p>
+                  <div class="discuss-reaction flex">
+                    <button onclick="stopPropagation()">
+                      <i class="fa fa-thumbs-up fa-sm" aria-hidden="true"></i>
+                      <span>1</span>
+                    </button>
+                    <button>
+                      <i class="fa fa-thumbs-down fa-sm" aria-hidden="true"></i>
+                      <span>1</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+    `;
+    } else {
+      a += `<div class="discuss-box">
+                <div class="discuss-post">
+    <a href="/profile/${cmt.user_id}" class="personal-p flex">
                     <div class="profile-pic">
                       <!-- <img class="" src="/assets/google.png" alt="" /> -->
                     </div>
@@ -153,6 +214,37 @@ async function releventcmt() {
                 </div>
               </div>
     `;
+    }
   });
   document.querySelector(".cmt-fill").innerHTML = a;
+
+  optBtn = document.querySelectorAll(".p-opt");
+
+  optBtnB = document.querySelectorAll(".p-optD");
+
+  optBtn.forEach((btn, i) => {
+    btn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      optBtnB[i].classList.toggle("displayBlock");
+    });
+  });
 }
+
+async function cmtDelete(a) {
+  let data = { id: a };
+  await fetch(`http://localhost:5000/cmtdelete/${cmtBtn.dataset.id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+  await releventCmt();
+}
+
+const source = new EventSource(`/comments/stream/${cmtBtn.dataset.id}`);
+
+source.onmessage = async (event) => {
+  const data = JSON.parse(event.data);
+  console.log(data);
+  await releventCmt();
+};

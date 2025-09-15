@@ -245,7 +245,15 @@
   border-radius: 20px;
 }
 
-.profile-nav a {
+.profile-nav input {
+  display: none;
+}
+
+.profile-nav input:checked + label {
+  background-color: var(--light-color);
+}
+
+.profile-nav label {
   /* display: inline-block; */
   padding: 0.5rem 0.6rem;
   cursor: pointer;
@@ -257,13 +265,13 @@
   font-weight: 500;
 }
 
-.profile-nav a:hover {
+.profile-nav label:hover {
   text-decoration: underline;
 }
 
-.profile-nav a:active {
+/* .profile-nav a:active {
   background-color: var(--light-color);
-}
+} */
 
 /* PROFILE-UPDATE */
 

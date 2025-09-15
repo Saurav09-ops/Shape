@@ -33,6 +33,7 @@ app.use(
     },
   })
 );
+let client = [];
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -222,10 +223,18 @@ app.post("/comment", isAuthenticated, async (req, res) => {
   let { postId } = req.body;
 
   try {
-    await db.query(
-      "INSERT INTO comment(user_id,post_id,comment) values($1,$2,$3)",
+    let result = await db.query(
+      "INSERT INTO comment(user_id,post_id,comment) values($1,$2,$3) RETURNING *",
       [userId, postId, comment]
     );
+
+    const cmt = result.rows[0];
+    const payload = JSON.stringify(cmt);
+    client.forEach((client) => {
+      if (client.id === postId) {
+        return client.line.write(`data: ${payload}\n\n`);
+      }
+    });
   } catch (err) {
     res.status(500).json({ status: "Faliure" });
     console.log(err);
@@ -233,21 +242,57 @@ app.post("/comment", isAuthenticated, async (req, res) => {
   res.status(201).json({ status: "success" });
 });
 
-app.get("/action/:id", async (req, res) => {
+app.get("/comments/stream/:id", isAuthenticated, (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  const postId = req.params.id;
+  const clientObj = { id: postId, line: res };
+  client.push(clientObj);
+
+  req.on("close", () => {
+    client = client.filter((c) => c !== clientObj);
+    // console.log(client.length);
+  });
+});
+
+app.get("/action/:id", isAuthenticated, async (req, res) => {
   let { id: postId } = req.params;
+  let userId = req.user.id;
 
   try {
     let result = await db.query(
-      "SELECT users.id,users.first_name,users.last_name,comment.comment,comment.created_at FROM comment INNER JOIN users ON users.id = comment.user_id WHERE comment.post_id=$1::int ORDER BY comment.created_at DESC ;",
+      "SELECT  users.id AS user_id, comment.id AS cmt_id,users.first_name,users.last_name,comment.comment,comment.created_at FROM comment INNER JOIN users ON users.id = comment.user_id WHERE comment.post_id=$1::int ORDER BY comment.created_at DESC ;",
       [postId]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ status: "No comment" });
     }
 
-    res.json(result.rows);
+    res.json({ data: result.rows, user_id: userId });
   } catch (err) {
     res.status(500).json({ status: "Failure" });
+    console.log(err);
+  }
+});
+
+app.post("/cmtdelete/:id", isAuthenticated, async (req, res) => {
+  let { id: postId } = req.params;
+  const { id } = req.body;
+  const message = {
+    msg: "deleted",
+  };
+  try {
+    await db.query("DELETE FROM comment Where id=$1", [id]);
+    let data = JSON.stringify(message);
+    client.forEach((client) => {
+      if (client.id === postId) {
+        return client.line.write(`data: ${data}\n\n`);
+      }
+    });
+    res.status(200).json({ status: "Deleted" });
+  } catch (err) {
+    res.status(500).json({ status: "Faliure" });
     console.log(err);
   }
 });
