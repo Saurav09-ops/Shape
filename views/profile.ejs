@@ -107,7 +107,7 @@
       <div class="container" style="padding-right: 15px">
        
         <div class="update"></div>
-        <div class="post-wrapper">
+        <div class="post-wrapper" data-id="<%=profileUser.id%>" >
         <%if (profileUser.id===currentUser.id){%>
          <div class="profile-hero flex">
              <div class="profile-P flex">
@@ -161,7 +161,7 @@
                 </div>
               </div>
               <%}%>
-              
+       <div id="content">     
        <%if(posts.length===0){%>
         <div class="post-cover text-center" style="border: none; margin-top: 3rem; font-size: larger; font-weight: 400;">
   <%=profileUser.first_name%> <%=profileUser.last_name%> haven't posted yet 🤓
@@ -286,6 +286,7 @@
         </div>
         <%})%> <%}%>
         <%}%>
+        </div>  
         </div>
       </div>
       <div class="nav-r">
@@ -300,3 +301,4 @@
     <script src="/js/profile.js"></script>
   </body>
 </html>
+

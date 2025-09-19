@@ -8,10 +8,20 @@ import env from "dotenv";
 import passport from "passport";
 import flash from "connect-flash";
 import GoogleStrategy from "passport-google-oauth2";
+import cors from "cors";
 
 const app = express();
 const port = 5000;
 env.config();
+
+// const allowedOrigin = "https://7jctqtj0-5000.inc1.devtunnels.ms"; // or your frontend URL
+
+// app.use(
+//   cors({
+//     origin: allowedOrigin,
+//     credentials: true,
+//   })
+// );
 
 const db = new pg.Client({
   user: process.env.PG_USER,
@@ -291,6 +301,26 @@ app.post("/cmtdelete/:id", isAuthenticated, async (req, res) => {
       }
     });
     res.status(200).json({ status: "Deleted" });
+  } catch (err) {
+    res.status(500).json({ status: "Faliure" });
+    console.log(err);
+  }
+});
+
+app.get("/profilecmt/:id", isAuthenticated, async (req, res) => {
+  let { id: profileId } = req.params;
+  let userId = req.user.id;
+
+  try {
+    let result = await db.query(
+      " SELECT  posts.id, posts.title, comment.comment, posts.user_id,users.first_name,users.last_name FROM comment INNER JOIN posts ON posts.id = comment.post_id INNER JOIN users ON users.id= posts.user_id WHERE comment.user_id=$1::int ORDER BY comment.created_at DESC",
+      [profileId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ status: "No comment on any post" });
+    }
+
+    res.json({ data: result.rows, user_id: userId });
   } catch (err) {
     res.status(500).json({ status: "Faliure" });
     console.log(err);

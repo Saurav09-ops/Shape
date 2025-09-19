@@ -2,12 +2,27 @@ const check = localStorage.getItem("navState");
 
 navState(check);
 
+let optBtn = [];
+let optBtnB = [];
+optBtn = document.querySelectorAll(".p-opt");
+optBtnB = document.querySelectorAll(".p-optD");
+
 document.querySelector(".profile").addEventListener("click", (event) => {
   event.stopPropagation();
   document.querySelector(".nave-bar").classList.toggle("overflow");
 });
 
+optBtn.forEach((btn, i) => {
+  btn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    optBtnB[i].classList.toggle("displayBlock");
+  });
+});
+
 document.addEventListener("click", () => {
+  optBtnB.forEach((btn) => {
+    btn.classList.remove("displayBlock");
+  });
   document.querySelector(".nave-bar").classList.remove("overflow");
 });
 

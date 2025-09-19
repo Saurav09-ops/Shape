@@ -103,14 +103,36 @@
           <%posts.forEach((post)=>{%>
           <div class="post-cover">
             <div class="post" onclick="window.location='/comment/<%=post.id%>'">
-              <a href="/profile/<%=post.user_id%>" class="personal-p flex">
+              <!-- <a href="/profile/<%=post.user_id%>" class="personal-p flex">
                 <div class="profile-pic">
-                  <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                  <img class="" src="/assets/google.png" alt="" />
                 </div>
                 <p style="font-size: medium">
                   <%=post.first_name%> <%=post.last_name%>
                 </p>
-              </a>
+              </a> -->
+
+              <div class="personal-p flex">
+                <a href="/profile/<%=post.user_id%>"
+                  ><div class="profile-pic">
+                    <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                  </div></a
+                >
+
+                <a href="/profile/<%=post.user_id%>"
+                  ><p style="font-size: medium">
+                    <%=post.first_name%> <%=post.last_name%>
+                  </p></a
+                >
+                <div class="p-opt flex" style="margin-left: auto">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="p-optD">
+                    <button class="p-opt-btn">
+                      <i class="fa fa-bookmark" aria-hidden="true"></i> Save
+                    </button>
+                  </div>
+                </div>
+              </div>
 
               <h4 class="post-title sm-x"><%=post.title%></h4>
 

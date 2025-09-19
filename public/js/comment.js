@@ -103,7 +103,7 @@ cmtBtn.addEventListener("click", async () => {
     comment: Text,
     postId: id,
   };
-  let result = await fetch("http://localhost:5000/comment", {
+  let result = await fetch("/comment", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(cmtData),
@@ -127,7 +127,7 @@ cmtBtn.addEventListener("click", async () => {
 async function releventCmt() {
   let a = "";
   const id = cmtBtn.dataset.id;
-  let result = await fetch(`http://localhost:5000/action/${id}`, {
+  let result = await fetch(`/action/${id}`, {
     method: "GET",
     credentials: "include",
   });
@@ -232,7 +232,7 @@ async function releventCmt() {
 
 async function cmtDelete(a) {
   let data = { id: a };
-  await fetch(`http://localhost:5000/cmtdelete/${cmtBtn.dataset.id}`, {
+  await fetch(`/cmtdelete/${cmtBtn.dataset.id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

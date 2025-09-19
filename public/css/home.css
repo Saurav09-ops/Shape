@@ -184,3 +184,47 @@
   word-spacing: 2px;
   line-height: 1.6;
 }
+
+/* /////////////////////// */
+
+.p-opt {
+  position: relative;
+  inline-size: 25px;
+  aspect-ratio: 1;
+
+  border-radius: 100vw;
+}
+
+.p-opt:hover {
+  background-color: #0000001b;
+}
+
+.p-optD {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: white;
+  width: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px 3px rgba(128, 128, 128, 0.193);
+}
+
+.p-opt-btn {
+  width: 100%;
+  padding: 0.5rem;
+  text-align: start;
+  background-color: transparent;
+}
+
+.p-opt-btn i {
+  margin: 0 0.4rem;
+}
+
+.p-opt-btn:hover {
+  background-color: var(--secondary-color);
+}
+.displayBlock {
+  display: block;
+}

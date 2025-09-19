@@ -44,6 +44,10 @@ document.addEventListener("click", () => {
   document.querySelector(".nave-bar").classList.remove("overflow");
 });
 
+document.getElementById("option2").addEventListener("click", async () => {
+  await profileCmt();
+});
+
 updateBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     const id = btn.dataset.id;
@@ -124,4 +128,67 @@ function pageState() {
     return localStorage.setItem("prState", 1);
   }
   return localStorage.removeItem("prState");
+}
+
+async function profileCmt() {
+  let a = "";
+  let profileId = document.querySelector(".post-wrapper").dataset.id;
+
+  let result = await fetch(`/profilecmt/${profileId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+  let value = await result.json();
+  if (value.status) {
+    a = `<div class="post-cover text-center" style="border: none; margin-top: 3rem; font-size: larger; font-weight: 400;">
+  Not commented yet
+</div>`;
+    document.getElementById("content").innerHTML = a;
+    return;
+  }
+  let post = value.data;
+
+  post.forEach((post) => {
+    a += `<div class="post-cover" >
+          <div class="post" >
+            <div class="personal-p flex">
+              <a href="/profile/${post.user_id}"
+                ><div class="profile-pic">
+                  <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                </div></a
+              >
+
+              <a href="/profile/${post.user_id}"
+                ><p style="font-size: small; font-weight: 450">
+                  ${post.first_name} ${post.last_name}
+                </p></a
+              >
+
+             
+              <p style="font-size: 0.7rem; font-weight: 250" >• ${post.title}</p>
+
+            </div>
+
+            
+
+            <p class="post-detail sm-x" font-weight: 500">${post.comment}</p>
+
+            <div class="function flex">
+                <button>
+                  <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                  <span>1</span>
+                </button>
+                <button>
+                  <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                  <span>1</span>
+                </button>
+                <button>
+                  <i class="fa fa-comment" aria-hidden="true"></i> <span>1</span>
+                </button>
+              </div>
+          </div>
+          </div>`;
+  });
+
+  document.getElementById("content").innerHTML = a;
 }
