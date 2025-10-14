@@ -141,11 +141,18 @@
 }
 
 .profile-pic {
+  display: flex;
   inline-size: 25px;
   aspect-ratio: 1;
   border-radius: 100vw;
   object-fit: cover;
-  background-color: #465c88;
+  background-color: antiquewhite;
+  overflow: hidden;
+  place-items: center;
+}
+
+.p-pic {
+  width: 100%;
 }
 
 .main .post h4 {

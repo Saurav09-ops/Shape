@@ -48,7 +48,7 @@ document.querySelector(".cancel").addEventListener("click", () => {
 document.querySelector(".MnavL-btn").addEventListener("click", () => {
   document.querySelector(".main-navL").classList.toggle("main-navL-width");
   checking();
-  console.log(localStorage.getItem("navState"));
+
   document.querySelector(".MnavL-btn").classList.toggle("btnL");
   document.querySelector(".demo").classList.toggle("demoOP");
 });
@@ -132,6 +132,7 @@ async function releventCmt() {
     credentials: "include",
   });
   let value = await result.json();
+
   let data = value.data;
   userId = value.user_id;
   if (!data) {
@@ -151,7 +152,7 @@ async function releventCmt() {
                   <div class="personal-p flex">
                     <a href="/profile/${cmt.user_id}"
                       ><div class="profile-pic">
-                        <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                       <img class="p-pic" src="${cmt.profile_pic_url}" alt="" />
                       </div></a
                     >
 
@@ -191,7 +192,7 @@ async function releventCmt() {
                 <div class="discuss-post">
     <a href="/profile/${cmt.user_id}" class="personal-p flex">
                     <div class="profile-pic">
-                      <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                      <img class="p-pic" src="${cmt.profile_pic_url}" alt="" />
                     </div>
                     <p style="font-size: medium">
                       ${cmt.first_name} ${cmt.last_name}
@@ -245,6 +246,83 @@ const source = new EventSource(`/comments/stream/${cmtBtn.dataset.id}`);
 
 source.onmessage = async (event) => {
   const data = JSON.parse(event.data);
-  console.log(data);
+
   await releventCmt();
 };
+
+window.addEventListener("beforeunload", () => {
+  source.close();
+});
+
+///////////////////////////////////////////////////////////
+
+document.addEventListener("DOMContentLoaded", () => {
+  const wrapper = document.querySelector(".post-wrapper");
+
+  if (!wrapper) return;
+
+  wrapper.addEventListener("click", async (e) => {
+    const post = e.target.closest(".post");
+    const like = e.target.closest(".like");
+    const disLike = e.target.closest(".dislike");
+    let postId = post.dataset.id;
+    let userId = document.querySelector(".main").dataset.id;
+    if (like) {
+      let data = { userId };
+      let response = await fetch(`/like/${postId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        return console.log("error");
+      }
+      result = await response.json();
+
+      return;
+    }
+
+    if (disLike) {
+      let data = { userId };
+      let response = await fetch(`/dislike/${postId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        return console.log("error");
+      }
+      result = await response.json();
+
+      return;
+    }
+
+    // if (post) {
+    //   window.location = `/comment/${postId}`;
+
+    //   return;
+    // }
+  });
+});
+
+const line = new EventSource(`/reaction/stream/`);
+
+line.onmessage = async (event) => {
+  const result = JSON.parse(event.data);
+
+  const post = document.getElementById(`p${result.postId}`);
+  if (!post) {
+    return console.log("no post");
+  }
+
+  post.querySelector(".like-t").innerHTML = result.like;
+  post.querySelector(".dislike-t").innerHTML = result.dislike;
+};
+
+window.addEventListener("beforeunload", () => {
+  line.close();
+});

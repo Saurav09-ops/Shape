@@ -43,9 +43,11 @@
         </div>
 
         <div class="profile">
+          <img class="p-pic-nav" src="<%=currentUser.profile_pic_url%>" alt="" />
           <div class="profile-menu">
             <ul class="flex">
-              <li><a href="/profile">Profile</a></li>
+               <li><a href="/profile">Profile</a></li>
+              <li><a href="/setting">Setting</a></li>
               <li><a href="/logout">Logout</a></li>
             </ul>
           </div>
@@ -62,7 +64,7 @@
 
 
     <!-- main -->
-    <section class="main">
+    <section class="main" data-id="<%=currentUser.id%>">
       <div class="main-navL">
         <button class="btn MnavL-btn">
           <i class="fa fa-bars fa-lg" aria-hidden="true "></i>
@@ -112,7 +114,7 @@
          <div class="profile-hero flex">
              <div class="profile-P flex">
               <div class="p-pic">
-                 <!-- <img src="" alt=""> -->
+                 <img class="p-p" src="<%=profileUser.profile_pic_url%> " alt="">
               </div>
               <div class="p-name ml-s">
                 <h3 style="font-size:1.5rem;"><%=profileUser.first_name%> <%=profileUser.last_name%></h3>
@@ -140,7 +142,7 @@
               <div class="profile-hero flex">
              <div class="profile-P flex">
               <div class="p-pic">
-                 <!-- <img src="" alt=""> -->
+                 <img class="p-p" src="<%=profileUser.profile_pic_url%> " alt="">
               </div>
               <div class="p-name ml-s">
                 <h3 style="font-size:1.5rem;"><%=profileUser.first_name%> <%=profileUser.last_name%></h3>
@@ -171,11 +173,12 @@
         
         <%if (profileUser.id===currentUser.id){%> <%posts.forEach((post,i)=>{%>
         <div class="post-cover" >
-        <div class="post" >
+        <div id="p<%=post.id%>" class="post" data-id=<%=post.id%>>
           <div class="personal-p flex">
             <a href="/profile/<%=post.user_id%>"
+
               ><div class="profile-pic">
-                <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                <img class="p-p" src="<%=profileUser.profile_pic_url%>" alt="" />
               </div></a
             >
 
@@ -216,29 +219,29 @@
           <% } %>
 
           <div class="function flex">
-              <button>
+              <button class="like">
                 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                <span>1</span>
+                <span class="like-t"><%=post.likes%></span>
               </button>
-              <button>
+              <button class="dislike">
                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                <span>1</span>
+                <span class="dislike-t"><%=post.dislikes%></span>
               </button>
               <button>
-                <i class="fa fa-comment" aria-hidden="true"></i> <span>1</span>
+                <i class="fa fa-comment" aria-hidden="true"></i> <span><%=post.comments%></span>
               </button>
             </div>
         </div>
         </div>
         <%})%> <%}else{%> <% posts.forEach((post)=>{ %>
           <div class="post-cover" >
-        <div class="post" >
+        <div id="p<%=post.id%>" class="post" data-id=<%=post.id%>>
          
 
           <div class="personal-p flex">
             <a href="/profile/<%=post.user_id%>"
               ><div class="profile-pic">
-                <!-- <img class="" src="/assets/google.png" alt="" /> -->
+                 <img class="p-p" src="<%=profileUser.profile_pic_url%>" alt="" />
               </div></a
             >
 
@@ -251,7 +254,7 @@
               <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
               <div class="p-optD">
                <button
-              class=" p-opt-btn"
+              class=" p-opt-btn save-btn"
               
               
             >
@@ -270,16 +273,16 @@
           <% } %>
 
          <div class="function flex">
-              <button>
+              <button class="like">
                 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                <span>1</span>
+                <span class="like-t"><%=post.likes%></span>
               </button>
-              <button>
+              <button class="dislike">
                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                <span>1</span>
+                <span class="dislike-t"><%=post.dislikes%></span>
               </button>
               <button>
-                <i class="fa fa-comment" aria-hidden="true"></i> <span>1</span>
+                <i class="fa fa-comment" aria-hidden="true"></i> <span><%=post.comments%></span>
               </button>
             </div>
         </div>

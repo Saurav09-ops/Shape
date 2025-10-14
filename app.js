@@ -23,15 +23,15 @@ env.config();
 //   })
 // );
 
-const db = new pg.Client({
+const db = new pg.Pool({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
   database: process.env.PG_DATABASE,
   password: process.env.PG_PASSWORD,
   port: process.env.PG_PORT,
+  max: 10,
+  idleTimeoutMillis: 30000,
 });
-
-db.connect();
 
 app.use(
   session({
@@ -44,7 +44,7 @@ app.use(
   })
 );
 let client = [];
-
+let client2 = [];
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -124,16 +124,33 @@ app.post("/signup", async (req, res) => {
 });
 
 app.get("/home", isAuthenticated, async (req, res) => {
+  let { id: userId } = req.user;
+
+  let picResult = await db.query(
+    "select profile_pic_url from users where id=$1",
+    [userId]
+  );
+
+  let pic = picResult.rows[0];
+
   let result = await db.query(
-    "SELECT posts.id, users.first_name,users.last_name,posts.user_id,posts.title,posts.detail,posts.created_at FROM users INNER JOIN posts ON users.id = posts.user_id  ORDER BY created_at DESC"
+    "SELECT posts.id, users.first_name,users.last_name,users.profile_pic_url,posts.user_id,posts.title,posts.detail,posts.created_at,COALESCE(comment.comments,0)as comments,COALESCE(response.likes,0)as likes,COALESCE(response.dislikes,0)as dislikes FROM posts  INNER JOIN users ON users.id= posts.user_id LEFT JOIN(SELECT post_id, COUNT(*) AS comments FROM comment GROUP BY post_id) comment ON posts.id= comment.post_id LEFT JOIN(SELECT post_id,COUNT(CASE WHEN approve=true THEN user_id END)AS likes,COUNT(CASE WHEN approve=false THEN user_id END) AS dislikes FROM response GROUP BY post_id) response ON posts.id= response.post_id ORDER BY created_at DESC"
   );
   let posts = result.rows;
 
-  res.render("home", { posts: posts });
+  res.render("home", { posts: posts, userId: userId, pic: pic });
 });
 
-app.get("/compose", isAuthenticated, (req, res) => {
-  res.render("compose");
+app.get("/compose", isAuthenticated, async (req, res) => {
+  let { id: userId } = req.user;
+
+  let picResult = await db.query(
+    "select profile_pic_url from users where id=$1",
+    [userId]
+  );
+
+  let pic = picResult.rows[0];
+  res.render("compose", { pic: pic });
 });
 
 app.get("/reaction", async (req, res) => {
@@ -160,17 +177,38 @@ app.get("/profile", isAuthenticated, async (req, res) => {
   const user = req.user;
 
   try {
+    const userResult = await db.query("Select * FROM users WHERE id=$1 ", [
+      user.id,
+    ]);
+    const User = userResult.rows[0];
+    if (!User) {
+      return res.redirect("/home");
+    }
     const result = await db.query(
-      "Select * FROM posts WHERE user_id=$1 ORDER BY created_at DESC",
+      `SELECT posts.id, users.first_name,users.last_name,users.profile_pic_url,posts.user_id,posts.title,posts.detail,posts.created_at,COALESCE(comment.comments,0)as comments,COALESCE(response.likes,0)as likes,COALESCE(response.dislikes,0)as dislikes 
+      FROM posts  
+      INNER JOIN users ON users.id= posts.user_id 
+      LEFT JOIN(
+      SELECT post_id, COUNT(*) AS comments 
+      FROM comment 
+      GROUP BY post_id) comment ON posts.id= comment.post_id 
+      LEFT JOIN(
+      SELECT post_id,
+      COUNT(CASE WHEN approve=true THEN user_id END)AS likes,
+      COUNT(CASE WHEN approve=false THEN user_id END) AS dislikes 
+      FROM response 
+      GROUP BY post_id) response ON posts.id= response.post_id 
+      WHERE posts.user_id=$1
+      ORDER BY created_at DESC`,
       [user.id]
     );
     const posts = result.rows;
-    const profileUser = req.user;
+    const profileUser = User;
 
     res.render("profile", {
       posts: posts,
       profileUser: profileUser,
-      currentUser: user,
+      currentUser: User,
     });
   } catch (err) {
     console.log(err);
@@ -188,7 +226,21 @@ app.get("/profile/:id", isAuthenticated, async (req, res) => {
     }
 
     const postResult = await db.query(
-      "Select * FROM posts WHERE user_id=$1 ORDER BY created_at DESC",
+      `SELECT posts.id, users.first_name,users.last_name,users.profile_pic_url,posts.user_id,posts.title,posts.detail,posts.created_at,COALESCE(comment.comments,0)as comments,COALESCE(response.likes,0)as likes,COALESCE(response.dislikes,0)as dislikes 
+      FROM posts  
+      INNER JOIN users ON users.id= posts.user_id 
+      LEFT JOIN(
+      SELECT post_id, COUNT(*) AS comments 
+      FROM comment 
+      GROUP BY post_id) comment ON posts.id= comment.post_id 
+      LEFT JOIN(
+      SELECT post_id,
+      COUNT(CASE WHEN approve=true THEN user_id END)AS likes,
+      COUNT(CASE WHEN approve=false THEN user_id END) AS dislikes 
+      FROM response 
+      GROUP BY post_id) response ON posts.id= response.post_id 
+      WHERE posts.user_id=$1
+      ORDER BY created_at DESC`,
       [id]
     );
 
@@ -216,16 +268,51 @@ app.get("/logout", (req, res) => {
 
 app.get("/comment/:id", isAuthenticated, async (req, res) => {
   let { id } = req.params;
-  let result = await db.query(
-    "SELECT posts.id, users.first_name,users.last_name,posts.user_id,posts.title,posts.detail,posts.created_at FROM users INNER JOIN posts ON users.id = posts.user_id WHERE posts.id=$1",
-    [id]
-  );
-  let post = result.rows[0];
+  let { id: userId } = req.user;
 
-  res.render("comment", { post: post });
+  try {
+    let picResult = await db.query(
+      "select profile_pic_url from users where id=$1",
+      [userId]
+    );
+
+    let pic = picResult.rows[0];
+
+    let result = await db.query(
+      `SELECT posts.id, users.first_name,users.last_name,users.profile_pic_url,posts.user_id,posts.title,posts.detail,posts.created_at,COALESCE(comment.comments,0)as comments,COALESCE(response.likes,0)as likes,COALESCE(response.dislikes,0)as dislikes 
+      FROM posts  
+      INNER JOIN users ON users.id= posts.user_id 
+      LEFT JOIN(
+      SELECT post_id, COUNT(*) AS comments 
+      FROM comment 
+      GROUP BY post_id) comment ON posts.id= comment.post_id 
+      LEFT JOIN(
+      SELECT post_id,
+      COUNT(CASE WHEN approve=true THEN user_id END)AS likes,
+      COUNT(CASE WHEN approve=false THEN user_id END) AS dislikes 
+      FROM response 
+      GROUP BY post_id) response ON posts.id= response.post_id 
+      WHERE posts.id=$1`,
+      [id]
+    );
+    let post = result.rows[0];
+
+    res.render("comment", { post: post, userId: userId, pic: pic });
+  } catch (err) {}
 });
 
 //////////
+
+app.get("/setting", isAuthenticated, async (req, res) => {
+  let { id: userId } = req.user;
+  let picResult = await db.query(
+    "select profile_pic_url from users where id=$1",
+    [userId]
+  );
+
+  let pic = picResult.rows[0];
+  res.render("setting", { pic: pic });
+});
 
 app.post("/comment", isAuthenticated, async (req, res) => {
   let { comment } = req.body;
@@ -262,7 +349,22 @@ app.get("/comments/stream/:id", isAuthenticated, (req, res) => {
 
   req.on("close", () => {
     client = client.filter((c) => c !== clientObj);
-    // console.log(client.length);
+  });
+});
+
+app.get("/reaction/stream/", isAuthenticated, (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+
+  // res.write(`data: ${JSON.stringify({ connected: true })}\n\n`);
+
+  const clientObj = { line: res };
+  client2.push(clientObj);
+
+  req.on("close", () => {
+    client2 = client2.filter((c) => c !== clientObj);
   });
 });
 
@@ -272,7 +374,7 @@ app.get("/action/:id", isAuthenticated, async (req, res) => {
 
   try {
     let result = await db.query(
-      "SELECT  users.id AS user_id, comment.id AS cmt_id,users.first_name,users.last_name,comment.comment,comment.created_at FROM comment INNER JOIN users ON users.id = comment.user_id WHERE comment.post_id=$1::int ORDER BY comment.created_at DESC ;",
+      "SELECT  users.id AS user_id, comment.id AS cmt_id,users.first_name,users.last_name,users.profile_pic_url,comment.comment,comment.created_at FROM comment INNER JOIN users ON users.id = comment.user_id WHERE comment.post_id=$1::int ORDER BY comment.created_at DESC ;",
       [postId]
     );
     if (result.rows.length === 0) {
@@ -313,7 +415,25 @@ app.get("/profilecmt/:id", isAuthenticated, async (req, res) => {
 
   try {
     let result = await db.query(
-      " SELECT  posts.id, posts.title, comment.comment, posts.user_id,users.first_name,users.last_name FROM comment INNER JOIN posts ON posts.id = comment.post_id INNER JOIN users ON users.id= posts.user_id WHERE comment.user_id=$1::int ORDER BY comment.created_at DESC",
+      `SELECT  posts.id, users.first_name,users.last_name,users.profile_pic_url,posts.user_id,posts.title,comment.comment,COALESCE(total_count.comments,0)as comment_count,COALESCE(response.likes,0)as likes,COALESCE(response.dislikes,0)as dislikes 
+      FROM posts  
+      INNER JOIN users ON users.id= posts.user_id 
+      INNER JOIN(
+        SELECT DISTINCT ON(post_id)post_id,comment,created_at,user_id
+        FROM comment
+      ) comment ON posts.id=comment.post_id
+      LEFT JOIN(
+      SELECT post_id,COUNT(*) AS comments 
+      FROM comment 
+      GROUP BY post_id)AS total_count ON posts.id= total_count.post_id 
+      LEFT JOIN(
+      SELECT post_id,
+      COUNT(CASE WHEN approve=true THEN user_id END)AS likes,
+      COUNT(CASE WHEN approve=false THEN user_id END) AS dislikes 
+      FROM response 
+      GROUP BY post_id) response ON posts.id= response.post_id 
+      WHERE comment.user_id=$1::int
+      ORDER BY comment.created_at DESC`,
       [profileId]
     );
     if (result.rows.length === 0) {
@@ -327,14 +447,211 @@ app.get("/profilecmt/:id", isAuthenticated, async (req, res) => {
   }
 });
 
+app.post("/save", isAuthenticated, async (req, res) => {
+  const userId = req.body.userId;
+  const postId = req.body.postId;
+
+  try {
+    await db.query("insert into saved (user_id,post_id) values($1,$2)", [
+      userId,
+      postId,
+    ]);
+
+    res.status(200).json({ status: "success" });
+  } catch (err) {
+    if (err.code === "23505") {
+      res.json({ message: "This post is already saved by the user" });
+    } else {
+      res.status(500).json({ status: "Error saving post" });
+    }
+  }
+});
+
+app.get("/save/:id", isAuthenticated, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    let result = await db.query(
+      `SELECT posts.id, users.first_name,users.last_name,users.profile_pic_url,posts.user_id,posts.title,posts.detail,COALESCE(comment.comments,0)as comments,COALESCE(response.likes,0)as likes,COALESCE(response.dislikes,0)as dislikes 
+      FROM posts
+	    INNER JOIN saved ON posts.id=saved.post_id
+      INNER JOIN users ON users.id= posts.user_id 
+      LEFT JOIN(
+      SELECT post_id, COUNT(*) AS comments 
+      FROM comment 
+      GROUP BY post_id) comment ON posts.id= comment.post_id 
+      LEFT JOIN(
+      SELECT post_id,
+      COUNT(CASE WHEN approve=true THEN user_id END)AS likes,
+      COUNT(CASE WHEN approve=false THEN user_id END) AS dislikes 
+      FROM response 
+      GROUP BY post_id) response ON posts.id= response.post_id 
+      WHERE saved.user_id=$1::int
+	    ORDER BY saved.created_at DESC`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "No saved post" });
+    }
+    res.json(result.rows);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Faliure" });
+  }
+});
+
+app.get("/avatar", isAuthenticated, async (req, res) => {
+  const user = req.user;
+  try {
+    const userResult = await db.query("Select * FROM users WHERE id=$1 ", [
+      user.id,
+    ]);
+    const User = userResult.rows[0];
+    let result = await db.query("SELECT * FROM avatar ORDER BY id ASC ");
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "No avatar" });
+    }
+    res.json({ rows: result.rows, user: User });
+  } catch (err) {
+    res.status(500).json({ message: "Server Faliure" });
+  }
+});
+
+app.patch("/avatar/:id", isAuthenticated, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.body.userId;
+
+  try {
+    let avatar = await db.query(
+      "select profile_pic_url from avatar where id=$1",
+      [id]
+    );
+    if (!avatar.rows[0]) {
+      return res.status(404).json({ message: "Avatar not found" });
+    }
+
+    let result = await db.query(
+      "UPDATE users SET profile_pic_url =$1 WHERE users.id=$2 RETURNING *; ",
+      [avatar.rows[0].profile_pic_url, userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "No success" });
+    }
+    res.status(200).json({ message: "success" });
+  } catch (err) {
+    res.status(500).json({ message: "Server Faliure" });
+  }
+});
+
+app.post("/like/:id", isAuthenticated, async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  try {
+    await db.query(
+      "INSERT INTO response (user_id, post_id, approve) VALUES ($1, $2, $3) ON CONFLICT (user_id,post_id) DO UPDATE SET approve= CASE WHEN response.approve = EXCLUDED.approve THEN NULL ELSE EXCLUDED.approve END;",
+      [userId, id, true]
+    );
+
+    let result = await db.query(
+      "SELECT COUNT(CASE WHEN approve = true THEN user_id END) AS likes_count,COUNT(CASE WHEN approve = false THEN user_id END) AS dislikes_count FROM response WHERE post_id = $1;",
+      [id]
+    );
+
+    const data = {
+      postId: id,
+
+      like: result.rows[0].likes_count,
+      dislike: result.rows[0].dislikes_count,
+    };
+    client2.forEach((client) => {
+      return client.line.write(`data: ${JSON.stringify(data)}\n\n`);
+    });
+    res.json({ message: "success" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/dislike/:id", isAuthenticated, async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  try {
+    await db.query(
+      "INSERT INTO response (user_id, post_id, approve) VALUES ($1, $2, $3) ON CONFLICT (user_id,post_id) DO UPDATE SET approve= CASE WHEN response.approve = EXCLUDED.approve THEN NULL ELSE EXCLUDED.approve END;",
+      [userId, id, false]
+    );
+
+    let result = await db.query(
+      "SELECT COUNT(CASE WHEN approve = true THEN user_id END) AS likes_count,COUNT(CASE WHEN approve = false THEN user_id END) AS dislikes_count FROM response WHERE post_id = $1;",
+      [id]
+    );
+
+    const data = {
+      postId: id,
+
+      like: result.rows[0].likes_count,
+      dislike: result.rows[0].dislikes_count,
+    };
+
+    client2.forEach((client) => {
+      return client.line.write(`data: ${JSON.stringify(data)}\n\n`);
+    });
+
+    res.json({ message: "success" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/userlike/", isAuthenticated, async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const result = await db.query(
+      `SELECT response.post_id,posts.detail,posts.title,users.id,users.first_name,users.last_name,users.profile_pic_url,COALESCE(comment.comments,0)as comments,COALESCE(reaction.likes,0)as likes,COALESCE(reaction.dislikes,0)as dislikes
+      FROM response 
+      INNER JOIN posts ON posts.id=response.post_id
+      INNER JOIN users ON users.id=posts.user_id
+      LEFT JOIN(
+      SELECT post_id,COUNT(*)AS comments
+      FROM comment
+      GROUP BY post_id
+      )comment ON posts.id=comment.post_id
+      LEFT JOIN(
+      SELECT post_id,
+      COUNT(CASE WHEN approve=true THEN user_id END)AS likes,
+      COUNT(CASE WHEN approve=false THEN user_id END) AS dislikes 
+      FROM response 
+      GROUP BY post_id
+      )AS reaction ON posts.id=reaction.post_id
+      WHERE response.user_id=$1 AND approve=true
+      ORDER BY posts.created_at DESC`,
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ status: "No liked posts" });
+    }
+    res.json({ rows: result.rows });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 //////////////////////////
 
 app.post("/delete/:id", isAuthenticated, async (req, res) => {
   const id = req.params.id;
   const user = req.user;
   try {
+    await db.query("DELETE FROM response Where post_id=$1", [id]);
     await db.query("DELETE FROM comment Where post_id=$1", [id]);
-
+    await db.query("DELETE FROM saved Where post_id=$1", [id]);
     await db.query(`DELETE FROM posts WHERE id=$1 And user_id=$2`, [
       id,
       user.id,
@@ -426,6 +743,19 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((user, cb) => {
   cb(null, user);
+});
+
+process.on("SIGINT", async () => {
+  console.log("Shutting down server...");
+  await db.end();
+  console.log("DB pool closed");
+  process.exit(0);
+});
+
+process.on("SIGTERM", async () => {
+  console.log("Server terminated...");
+  await db.end();
+  process.exit(0);
 });
 
 app.listen(port, (req, res) => {

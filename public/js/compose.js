@@ -8,7 +8,7 @@ navState(check);
 document.querySelector(".MnavL-btn").addEventListener("click", () => {
   document.querySelector(".main-navL").classList.toggle("main-navL-width");
   checking();
-  console.log(localStorage.getItem("navState"));
+
   document.querySelector(".MnavL-btn").classList.toggle("btnL");
   document.querySelector(".demo").classList.toggle("demoOP");
 });
@@ -42,6 +42,7 @@ titleInput.addEventListener("blur", () => {
   if (!titleInput.value) {
     title.classList.remove("focus");
     title.classList.add("error");
+    document.querySelector(".post-b").classList.add("disabled");
   } else {
     title.classList.remove("focus");
     document.querySelector(".post-b").classList.remove("disabled");

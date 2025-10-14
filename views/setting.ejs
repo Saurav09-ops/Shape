@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/utilities.css" />
+    <link rel="stylesheet" href="/css/nav.css" />
+    <link rel="stylesheet" href="/css/setting.css" />
+
+    <title>Shape || Build you community</title>
+  </head>
+  <body>
+    <div class="backdrop display-none">
+      <div class="modal">
+        <div class="modal-title">
+          <h2 style="margin: auto">Avatar Collection</h2>
+          <button class="modal-close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="avatar-col"></div>
+        <!-- <button class="btn ">Save</button> -->
+      </div>
+    </div>
+
+    <div class="backdrop2 display-none">
+      <div class="modal">
+        <div class="modal-title">
+          <h2 style="margin: auto">Display Name</h2>
+          <button class="modal-close2">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <form action="">
+          <div class="D-input flex">
+            <input id="nick" type="text" maxlength="40" placeholder="" />
+            <label for="nick">Display name</label>
+            <span
+              id="d-count"
+              style="font-size: small; color: rgba(128, 128, 128, 0.692)"
+              >40</span
+            >
+          </div>
+          <button class="btn" type="submit">Set</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="backdrop3 display-none">
+      <div class="modal">
+        <div class="modal-title">
+          <h2 style="margin-left: 10px">Gender</h2>
+          <button class="modal-close3">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+        <form action="">
+          <div class="choose">
+            <div class="flex">
+              <label for="male">Male</label>
+              <input type="radio" name="gender" value="male" id="male" />
+            </div>
+            <div class="flex">
+              <label for="female">Female</label>
+              <input type="radio" name="gender" value="female" id="female" />
+            </div>
+            <button class="btn" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- top navebar -->
+
+    <section class="nave-bar">
+      <div class="container sm flex">
+        <a href="/home"
+          ><img class="" src="/assets/shape.png" alt="" height="30px"
+        /></a>
+
+        <div class="search flex">
+          <i class="fa fa-search"></i>
+          <input type="text" name="search" placeholder="Search" />
+        </div>
+
+        <div class="action">
+          <ul class="flex">
+            <li>
+              <a href="/compose"
+                >Create <i class="fa fa-plus" aria-hidden="true"></i
+              ></a>
+            </li>
+            <li>
+              <a href=""><i class="fa fa-bell" aria-hidden="true"></i></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="profile">
+          <img class="p-pic-nav" src="" alt="" />
+
+          <div class="profile-menu">
+            <ul class="flex">
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/setting">Setting</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- main -->
+
+    <section class="main">
+      <div class="main-navL">
+        <button class="btn MnavL-btn">
+          <i class="fa fa-bars fa-lg" aria-hidden="true "></i>
+        </button>
+        <div class="demo">
+          <div class="demo-j flex">
+            <a href="/home"
+              ><i
+                class="fa fa-home"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Home</a
+            >
+            <a href=""
+              ><i
+                class="fa fa-line-chart"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Popular</a
+            >
+            <a href=""
+              ><i
+                class="fa fa-users"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Community</a
+            >
+            <a href=""
+              ><i
+                class="fa fa-search-plus"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></i>
+              Explore</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="container" style="padding-right: 15px">
+        <div class="post-wrapper">
+          <h1>Setting</h1>
+          <div class="set">
+            <h3>Account</h3>
+            <ul class="acc-list">
+              <li>
+                Email address
+                <a
+                  ><span
+                    style="font-size: small; color: rgba(0, 0, 0, 0.55)"
+                  ></span
+                  ><button>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i></button
+                ></a>
+              </li>
+              <li>
+                Gender
+                <a
+                  ><span
+                    style="font-size: small; color: rgba(0, 0, 0, 0.55)"
+                  ></span>
+                  <button class="change-gen">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i></button
+                ></a>
+              </li>
+            </ul>
+          </div>
+          <div class="set">
+            <h3>Profile</h3>
+            <ul class="prof-list">
+              <li>
+                Display name
+                <a
+                  ><button class="display-name">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i></button
+                ></a>
+              </li>
+              <li>
+                Avatar
+                <a
+                  ><button class="avatar">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i></button
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="/js/setting.js"></script>
+  </body>
+</html>

@@ -88,12 +88,15 @@ body {
 }
 
 .profile {
-  background-color: #ff7a30;
+  display: flex;
+
   inline-size: 30px;
   aspect-ratio: 1;
   border-radius: 100vw;
   object-fit: cover;
-
+  background-color: antiquewhite;
+  overflow: hidden;
+  place-items: center;
   transition: 50ms;
 }
 
@@ -107,7 +110,7 @@ body {
   right: 5px;
 
   width: max(80px, 5%);
-  height: 65px;
+  height: fit-content;
   z-index: 200;
   border-radius: 10px;
   border-top-right-radius: 0;

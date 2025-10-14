@@ -137,11 +137,14 @@
 }
 
 .profile-pic {
+  display: flex;
   inline-size: 25px;
   aspect-ratio: 1;
   border-radius: 100vw;
   object-fit: cover;
-  background-color: #465c88;
+  background-color: antiquewhite;
+  overflow: hidden;
+  place-items: center;
 }
 
 .main .post h4 {
@@ -182,11 +185,26 @@
 }
 
 .p-pic {
+  display: flex;
+
+  object-fit: cover;
+  background-color: antiquewhite;
+  overflow: hidden;
+  place-items: center;
+
   width: 70px;
   aspect-ratio: 1;
   border-radius: 100vw;
-  background-color: #465c88;
+
   margin-bottom: 1.4rem;
+}
+
+.p-p {
+  width: 100%;
+}
+
+.p-pic-nav {
+  width: 100%;
 }
 
 .profile-p {

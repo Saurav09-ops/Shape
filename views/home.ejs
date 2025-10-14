@@ -44,9 +44,11 @@
         </div>
 
         <div class="profile">
+          <img class="p-pic" src="<%=pic.profile_pic_url%>" alt="" />
           <div class="profile-menu">
             <ul class="flex">
               <li><a href="/profile">Profile</a></li>
+              <li><a href="/setting">Setting</a></li>
               <li><a href="/logout">Logout</a></li>
             </ul>
           </div>
@@ -56,7 +58,7 @@
 
     <!-- main -->
 
-    <section class="main">
+    <section class="main" data-id="<%=userId%>">
       <div class="main-navL">
         <button class="btn MnavL-btn">
           <i class="fa fa-bars fa-lg" aria-hidden="true "></i>
@@ -102,7 +104,7 @@
         <div class="post-wrapper">
           <%posts.forEach((post)=>{%>
           <div class="post-cover">
-            <div class="post" onclick="window.location='/comment/<%=post.id%>'">
+            <div id="p<%=post.id%>" class="post" data-id="<%=post.id%>">
               <!-- <a href="/profile/<%=post.user_id%>" class="personal-p flex">
                 <div class="profile-pic">
                   <img class="" src="/assets/google.png" alt="" />
@@ -115,9 +117,12 @@
               <div class="personal-p flex">
                 <a href="/profile/<%=post.user_id%>"
                   ><div class="profile-pic">
-                    <!-- <img class="" src="/assets/google.png" alt="" /> -->
-                  </div></a
-                >
+                    <img
+                      class="p-pic"
+                      src="<%=post.profile_pic_url%>"
+                      alt=""
+                    /></div
+                ></a>
 
                 <a href="/profile/<%=post.user_id%>"
                   ><p style="font-size: medium">
@@ -127,7 +132,10 @@
                 <div class="p-opt flex" style="margin-left: auto">
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                   <div class="p-optD">
-                    <button class="p-opt-btn">
+                    <button
+                      class="p-opt-btn"
+                      onclick="event.stopPropagation();save(<%=userId%>,<%=post.id%>)"
+                    >
                       <i class="fa fa-bookmark" aria-hidden="true"></i> Save
                     </button>
                   </div>
@@ -141,19 +149,19 @@
               <% } %>
 
               <div class="function flex">
-                <button onclick="stopPropagation()">
+                <button class="like">
                   <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                  <span>1</span>
+                  <span class="like-t"><%=post.likes%></span>
                 </button>
-                <button>
+                <button class="dislike">
                   <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                  <span>1</span>
+                  <span class="dislike-t"><%=post.dislikes%></span>
                 </button>
                 <button
                   onclick="event.stopPropagation();  window.location='/comment/<%=post.id%>'"
                 >
                   <i class="fa fa-comment" aria-hidden="true"></i>
-                  <span>1</span>
+                  <span><%=post.comments%></span>
                 </button>
               </div>
             </div>
