@@ -45,12 +45,20 @@
 .main-navR {
   position: sticky;
   top: 0;
-  max-width: 300px;
+  width: 330px;
   height: 100dvh;
-
+  margin-right: 10px;
   padding-top: 70px;
   overflow: scroll;
   overscroll-behavior: contain;
+}
+
+.nav-container {
+  background-color: #eeeeee;
+  overflow: hidden;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  min-height: 100%;
 }
 
 .post-wrapper {
@@ -156,20 +164,34 @@
   justify-content: start;
 }
 
-.function button {
-  background-color: #fd7e3a3d;
-  padding: 0.25rem 0.5rem;
-  border: none;
+.reaction {
+  display: flex;
   margin-right: 0.5rem;
   border-radius: 20px;
+  background-color: rgba(128, 128, 128, 0.189);
+  overflow: hidden;
+  flex-direction: row;
+  gap: 0;
+}
+
+.like,
+.dislike {
+  padding: 0.5rem 0.5rem;
+
   margin-left: 0;
 }
 
 .function button:hover {
-  background-color: #fd7f3a88;
-  padding: 0.25rem 0.5rem;
+  background-color: rgba(128, 128, 128, 0.245);
+  /* padding: 0.25rem 0.5rem; */
+
+  /* margin-right: 0.5rem; */
+}
+
+.comment {
+  padding: 0.5rem 0.5rem;
   border: none;
-  margin-right: 0.5rem;
+  background-color: rgba(128, 128, 128, 0.189);
   border-radius: 20px;
   margin-left: 0;
 }
@@ -370,4 +392,17 @@
   font-size: small;
   word-spacing: 2px;
   line-height: 1.6;
+}
+/* ////////////////////////////// */
+
+.cover-pic {
+  height: 150px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: #898ac4;
+}
+.intro {
+  height: 600px;
+  width: 100%;
+  margin-bottom: 10px;
 }

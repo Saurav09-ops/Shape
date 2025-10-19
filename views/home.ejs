@@ -126,7 +126,7 @@
                 ></a>
 
                 <a href="/profile/<%=post.user_id%>"
-                  ><p style="font-size: medium">
+                  ><p style="font-size: small; font-weight: 450">
                     <%=post.first_name%> <%=post.last_name%>
                   </p></a
                 >
@@ -151,15 +151,18 @@
               <% } %>
 
               <div class="function flex">
-                <button class="like">
-                  <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                  <span class="like-t"><%=post.likes%></span>
-                </button>
-                <button class="dislike">
-                  <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                  <span class="dislike-t"><%=post.dislikes%></span>
-                </button>
+                <div class="reaction">
+                  <button class="like">
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    <span class="like-t"><%=post.likes%></span>
+                  </button>
+                  <button class="dislike">
+                    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    <span class="dislike-t"><%=post.dislikes%></span>
+                  </button>
+                </div>
                 <button
+                  class="comment"
                   onclick="event.stopPropagation();  window.location='/comment/<%=post.id%>'"
                 >
                   <i class="fa fa-comment" aria-hidden="true"></i>
@@ -172,7 +175,15 @@
         </div>
       </div>
       <div class="nav-r">
-        <div class="main-navR"></div>
+        <div class="main-navR">
+          <div class="nav-container">
+            <div class="recent flex">
+              <h5 style="font-weight: 500">RECENT POSTS</h5>
+              <a href="#">Clear</a>
+            </div>
+            <div class="demo-R"></div>
+          </div>
+        </div>
       </div>
     </section>
     <script type="module" src="/js/home.js"></script>

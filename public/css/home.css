@@ -1,11 +1,12 @@
 .main {
   display: flex;
   min-height: 100dvh;
+  background-color: #eeeeee;
 }
 
 .main-navL {
   width: 28px;
-
+  background-color: white;
   transition: 150ms ease-in-out;
   border-right: 1px solid rgba(0, 0, 0, 0.171);
 }
@@ -35,15 +36,27 @@
 .main .container {
   height: 100%;
   flex: 1;
-
+  margin-right: 10px;
   overflow: auto;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
 }
 
 .post-wrapper {
   max-width: 745px;
-  padding-top: 70px;
+  margin-top: 80px;
   margin-left: auto;
+
+  background-color: white;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.nav-container {
+  background-color: white;
+  overflow: hidden;
+  border-radius: 15px;
+
+  padding: 10px 10px;
 }
 
 .nav-r {
@@ -54,8 +67,9 @@
   top: 0;
   max-width: 300px;
   height: 100dvh;
-
-  padding-top: 70px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding-top: 80px;
   overflow: scroll;
   overscroll-behavior: contain;
 }
@@ -160,20 +174,34 @@
   justify-content: start;
 }
 
-.function button {
-  background-color: #fd7e3a3d;
-  padding: 0.25rem 0.5rem;
-  border: none;
+.reaction {
+  display: flex;
   margin-right: 0.5rem;
   border-radius: 20px;
+  background-color: rgba(128, 128, 128, 0.189);
+  overflow: hidden;
+  flex-direction: row;
+  gap: 0;
+}
+
+.like,
+.dislike {
+  padding: 0.5rem 0.55rem;
+
   margin-left: 0;
 }
 
 .function button:hover {
-  background-color: #fd7f3a88;
-  padding: 0.25rem 0.5rem;
+  background-color: rgba(128, 128, 128, 0.245);
+  /* padding: 0.25rem 0.5rem; */
+
+  /* margin-right: 0.5rem; */
+}
+
+.comment {
+  padding: 0.5rem 0.55rem;
   border: none;
-  margin-right: 0.5rem;
+  background-color: rgba(128, 128, 128, 0.189);
   border-radius: 20px;
   margin-left: 0;
 }
@@ -236,4 +264,25 @@
 }
 .no-transition {
   transition: none !important;
+}
+/* ///////////////////// */
+
+.recent {
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.recent > h5 {
+  color: rgb(128, 128, 128);
+}
+
+.recent > a {
+  color: blue;
+}
+
+.demo-R {
+  height: 150px;
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: azure;
 }

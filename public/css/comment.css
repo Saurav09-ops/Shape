@@ -164,20 +164,34 @@
   justify-content: start;
 }
 
-.function button {
-  background-color: #fd7e3a3d;
-  padding: 0.25rem 0.5rem;
-  border: none;
+.reaction {
+  display: flex;
   margin-right: 0.5rem;
   border-radius: 20px;
+  background-color: rgba(128, 128, 128, 0.189);
+  overflow: hidden;
+  flex-direction: row;
+  gap: 0;
+}
+
+.like,
+.dislike {
+  padding: 0.5rem 0.5rem;
+
   margin-left: 0;
 }
 
 .function button:hover {
-  background-color: #fd7f3a88;
-  padding: 0.25rem 0.5rem;
+  background-color: rgba(128, 128, 128, 0.264);
+  /* padding: 0.25rem 0.5rem; */
+
+  /* margin-right: 0.5rem; */
+}
+
+.comment-count {
+  padding: 0.5rem 0.5rem;
   border: none;
-  margin-right: 0.5rem;
+  background-color: rgba(128, 128, 128, 0.189);
   border-radius: 20px;
   margin-left: 0;
 }
@@ -215,6 +229,7 @@
   width: 100%;
   min-height: 80px;
   resize: vertical;
+  font-family: "Roboto", sans-serif;
 }
 
 #commentInput:focus {

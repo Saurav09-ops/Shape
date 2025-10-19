@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   delayVisibility();
 });
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
 
 async function avatar() {
   let response = await fetch("/avatar");
@@ -99,33 +99,57 @@ function modalEvents() {
   avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     backdrop.classList.remove("display-none");
+    setTimeout(() => {
+      document.querySelectorAll(".modal")[0].classList.add("modal-animation");
+    }, 10);
   });
 
   modalClose.addEventListener("click", (e) => {
     e.stopPropagation();
-    backdrop.classList.add("display-none");
+    document.querySelectorAll(".modal")[0].classList.remove("modal-animation");
+
+    setTimeout(() => {
+      backdrop.classList.add("display-none");
+    }, 100);
   });
 
   displayName.addEventListener("click", (e) => {
     e.stopPropagation();
     backdrop2.classList.remove("display-none");
+    setTimeout(() => {
+      document.querySelectorAll(".modal")[1].classList.add("modal-animation");
+    }, 100);
   });
 
   modalClose2.addEventListener("click", (e) => {
     e.stopPropagation();
-    backdrop2.classList.add("display-none");
+    // backdrop2.classList.add("display-none");
     document.getElementById("nick").value = "";
     document.querySelector("#d-count").innerHTML = 40;
+
+    document.querySelectorAll(".modal")[1].classList.remove("modal-animation");
+
+    setTimeout(() => {
+      backdrop2.classList.add("display-none");
+    }, 100);
   });
 
   genderSelection.addEventListener("click", (e) => {
     e.stopPropagation();
     backDrop3.classList.remove("display-none");
+    setTimeout(() => {
+      document.querySelectorAll(".modal")[2].classList.add("modal-animation");
+    }, 10);
   });
 
   modalClose3.addEventListener("click", (e) => {
     e.stopPropagation();
-    backDrop3.classList.add("display-none");
+
+    document.querySelectorAll(".modal")[2].classList.remove("modal-animation");
+
+    setTimeout(() => {
+      backDrop3.classList.add("display-none");
+    }, 100);
   });
 }
 

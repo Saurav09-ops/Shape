@@ -70,6 +70,7 @@ async function profileCmt() {
             <p class="post-detail sm-x" font-weight: 500">${post.comment}</p>
 
             <div class="function flex">
+              <div class="reaction">
                 <button class="like">
                   <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                   <span class="like-t">${post.likes}</span>
@@ -78,7 +79,8 @@ async function profileCmt() {
                   <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                   <span class="dislike-t" >${post.dislikes}</span>
                 </button>
-                <button>
+                 </div>
+                <button class="comment">
                   <i class="fa fa-comment" aria-hidden="true"></i> <span>${post.comment_count}</span>
                 </button>
               </div>
@@ -117,7 +119,7 @@ async function save() {
                 >
 
                 <a href="/profile/${post.user_id}"
-                  ><p style="font-size: medium">
+                  ><p style="font-size: small; font-weight: 450">
                     ${post.first_name} ${post.last_name}
                   </p></a
                 >
@@ -140,6 +142,7 @@ async function save() {
               <p class="post-detail sm-x">${post.detail}</p>
              
                <div class="function flex">
+               <div class="reaction">
                 <button class="like">
                   <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                   <span class="like-t">${post.likes}</span>
@@ -148,7 +151,8 @@ async function save() {
                   <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                   <span class="dislike-t" >${post.dislikes}</span>
                 </button>
-                <button>
+                </div>
+                <button class="comment">
                   <i class="fa fa-comment" aria-hidden="true"></i> <span>${post.comments}</span>
                 </button>
               </div>
@@ -206,7 +210,7 @@ async function postsLiked() {
                   >
 
                   <a href="/profile/${post.id}"
-                    ><p style="font-size: medium">
+                    ><p style="font-size: small; font-weight: 450">
                       ${post.first_name} ${post.last_name}
                     </p></a
                   >
@@ -228,6 +232,7 @@ async function postsLiked() {
                 <p class="post-detail sm-x">${post.detail}</p>
 
                  <div class="function flex">
+                 <div class="reaction">
                   <button class="like">
                     <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                     <span class="like-t">${post.likes}</span>
@@ -236,7 +241,8 @@ async function postsLiked() {
                     <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                     <span class="dislike-t" >${post.dislikes}</span>
                   </button>
-                  <button>
+                  </div>
+                  <button class="comment">
                     <i class="fa fa-comment" aria-hidden="true"></i> <span>${post.comments}</span>
                   </button>
                 </div>
@@ -369,6 +375,7 @@ function postEvents() {
     }
   });
 }
+
 function updatePostReactions() {
   line.onmessage = async (event) => {
     const result = JSON.parse(event.data);

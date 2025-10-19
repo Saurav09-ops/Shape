@@ -104,7 +104,7 @@ async function releventCmt() {
                     >
 
                     <a href="/profile/${cmt.user_id}"
-                      ><p style="font-size: medium">
+                      ><p style="font-size: small; font-weight: 450">
                         ${cmt.first_name} ${cmt.last_name}
                       </p></a
                     >
@@ -141,7 +141,7 @@ async function releventCmt() {
                     <div class="profile-pic">
                       <img class="p-pic" src="${cmt.profile_pic_url}" alt="" />
                     </div>
-                    <p style="font-size: medium">
+                    <p style="font-size: small; font-weight: 450">
                       ${cmt.first_name} ${cmt.last_name}
                     </p>
                   </a>
