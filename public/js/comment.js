@@ -1,128 +1,75 @@
+import { navState, topnavEvent, sidenavEvent } from "./utlis/nav.js";
+import { fetchReactionData } from "./utlis/api.js";
+import { delayVisibility } from "./utlis/domUtils.js";
+
 const check = localStorage.getItem("navState");
-navState(check);
 
 const cmtBtn = document.querySelector(".cmt-submit");
 let optBtn = [];
 let optBtnB = [];
 let userId;
-releventCmt();
+let prevBtn;
+const line = new EventSource(`/reaction/stream/`);
+const source = new EventSource(`/comments/stream/${cmtBtn.dataset.id}`);
 
-document.querySelector(".profile").addEventListener("click", (event) => {
-  event.stopPropagation();
-  document.querySelector(".nave-bar").classList.toggle("overflow");
+document.addEventListener("DOMContentLoaded", () => {
+  navState(check);
+  topnavEvent();
+  sidenavEvent();
+  releventCmt();
+  intCmtBtn();
+  initCmtSec();
+  openComentSection();
+  closeCommentSection();
+  postEvent();
+  updatePostReactions();
+  liveCmtReload();
+  closeLiveServer();
+  handleDocumentClick();
+  delayVisibility();
 });
 
-document.addEventListener("click", () => {
-  optBtnB.forEach((btn) => {
-    btn.classList.remove("displayBlock");
-  });
-  document.querySelector(".nave-bar").classList.remove("overflow");
-});
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-document.querySelector(".comment").addEventListener("click", () => {
-  document.querySelector(".comment").classList.remove("cmt");
-  document.querySelector(".temp").classList.add("displayOff");
-  document
-    .getElementById("commentInput")
-    .setAttribute("style", "display:block");
-  document.querySelector(".comment-func").classList.add("displayOn");
-});
+function updatePostReactions() {
+  line.onmessage = async (event) => {
+    const result = JSON.parse(event.data);
 
-document.querySelector(".discuss-btn").addEventListener("click", () => {
-  document.querySelector(".comment").classList.remove("cmt");
-  document.querySelector(".temp").classList.add("displayOff");
-  document
-    .getElementById("commentInput")
-    .setAttribute("style", "display:block");
-  document.querySelector(".comment-func").classList.add("displayOn");
-});
+    const post = document.getElementById(`p${result.postId}`);
+    if (!post) {
+      return console.log("no post");
+    }
 
-document.querySelector(".cancel").addEventListener("click", () => {
-  document.querySelector(".comment-func").classList.remove("displayOn");
-  document.getElementById("commentInput").removeAttribute("style");
-  document.querySelector(".temp").classList.remove("displayOff");
-  document.querySelector(".comment").classList.add("cmt");
-  document.getElementById("commentInput").value = "";
-});
-
-document.querySelector(".MnavL-btn").addEventListener("click", () => {
-  document.querySelector(".main-navL").classList.toggle("main-navL-width");
-  checking();
-
-  document.querySelector(".MnavL-btn").classList.toggle("btnL");
-  document.querySelector(".demo").classList.toggle("demoOP");
-});
-
-function checking() {
-  let a = document.querySelector(".main-navL").classList;
-
-  if (a.length === 1) {
-    return localStorage.setItem("navState", 0);
-  }
-  return localStorage.setItem("navState", 1);
-}
-
-function navState(a) {
-  const state = Number(a);
-
-  if (!state) {
-    return;
-  } else {
-    document
-      .querySelector(".main-navL")
-      .setAttribute("style", "transition: none;");
-    document
-      .querySelector(".MnavL-btn")
-      .setAttribute("style", "transition: none;");
-
-    document.querySelector(".main-navL").classList.add("main-navL-width");
-    document.querySelector(".MnavL-btn").classList.add("btnL");
-    document.querySelector(".demo").classList.add("demoOP");
-    setTimeout(() => {
-      document.querySelector(".main-navL").removeAttribute("style");
-      document.querySelector(".MnavL-btn").removeAttribute("style");
-    }, 200);
-  }
-}
-
-cmtBtn.addEventListener("click", async () => {
-  const Text = document.getElementById("commentInput").value;
-  if (Text === "") {
-    document.getElementById("commentInput").placeholder =
-      "Your thought is needed!";
-    document
-      .querySelector(".cmt-submit")
-      .setAttribute("style", " background-color:rgba(158, 15, 15, 1);");
-    return setTimeout(() => {
-      document.querySelector(".cmt-submit").removeAttribute("style");
-      document.getElementById("commentInput").placeholder = "Discuss..";
-    }, 800);
-  }
-  const id = cmtBtn.dataset.id;
-  let cmtData = {
-    comment: Text,
-    postId: id,
+    post.querySelector(".like-t").innerHTML = result.like;
+    post.querySelector(".dislike-t").innerHTML = result.dislike;
   };
-  let result = await fetch("/comment", {
+}
+
+function liveCmtReload() {
+  source.onmessage = async (event) => {
+    const data = JSON.parse(event.data);
+
+    await releventCmt();
+  };
+}
+
+function closeLiveServer() {
+  window.addEventListener("beforeunload", () => {
+    line.close();
+    source.close();
+  });
+}
+
+async function cmtDelete(a) {
+  let data = { id: a };
+  await fetch(`/cmtdelete/${cmtBtn.dataset.id}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cmtData),
+    body: JSON.stringify(data),
     credentials: "include",
   });
-  let data = await result.json();
-  if (data.status === "success") {
-    document.getElementById("commentInput").value = "";
-    document.getElementById("commentInput").placeholder = "Submitted";
-    document
-      .querySelector(".cmt-submit")
-      .setAttribute("style", " background-color:rgb(15, 158, 15);");
-    setTimeout(() => {
-      document.querySelector(".cmt-submit").removeAttribute("style");
-      document.getElementById("commentInput").placeholder = "Discuss..";
-    }, 800);
-  }
   await releventCmt();
-});
+}
 
 async function releventCmt() {
   let a = "";
@@ -164,7 +111,7 @@ async function releventCmt() {
                     <div class="p-opt flex" style="margin-left: auto">
                       <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                       <div class="p-optD">
-                            <button class="p-opt-btn" onclick="event.stopPropagation();cmtDelete(${cmt.cmt_id});" >
+                            <button class="p-opt-btn" data-cmt="${cmt.cmt_id}">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             Delete
                           </button>
@@ -222,107 +169,148 @@ async function releventCmt() {
   optBtn = document.querySelectorAll(".p-opt");
 
   optBtnB = document.querySelectorAll(".p-optD");
+}
 
-  optBtn.forEach((btn, i) => {
-    btn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      optBtnB[i].classList.toggle("displayBlock");
+function intCmtBtn() {
+  cmtBtn.addEventListener("click", async () => {
+    const Text = document.getElementById("commentInput").value;
+    if (Text === "") {
+      document.getElementById("commentInput").placeholder =
+        "Your thought is needed!";
+      document
+        .querySelector(".cmt-submit")
+        .setAttribute("style", " background-color:rgba(158, 15, 15, 1);");
+      return setTimeout(() => {
+        document.querySelector(".cmt-submit").removeAttribute("style");
+        document.getElementById("commentInput").placeholder = "Discuss..";
+      }, 800);
+    }
+    const id = cmtBtn.dataset.id;
+    let cmtData = {
+      comment: Text,
+      postId: id,
+    };
+    let result = await fetch("/comment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(cmtData),
+      credentials: "include",
     });
+    let data = await result.json();
+    if (data.status === "success") {
+      document.getElementById("commentInput").value = "";
+      document.getElementById("commentInput").placeholder = "Submitted";
+      document
+        .querySelector(".cmt-submit")
+        .setAttribute("style", " background-color:rgb(15, 158, 15);");
+      setTimeout(() => {
+        document.querySelector(".cmt-submit").removeAttribute("style");
+        document.getElementById("commentInput").placeholder = "Discuss..";
+      }, 800);
+    }
+    await releventCmt();
   });
 }
 
-async function cmtDelete(a) {
-  let data = { id: a };
-  await fetch(`/cmtdelete/${cmtBtn.dataset.id}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-    credentials: "include",
+function initCmtSec() {
+  document.querySelector(".comment").addEventListener("click", () => {
+    document.querySelector(".comment").classList.remove("cmt");
+    document.querySelector(".temp").classList.add("displayOff");
+    document
+      .getElementById("commentInput")
+      .setAttribute("style", "display:block");
+    document.querySelector(".comment-func").classList.add("displayOn");
   });
-  await releventCmt();
 }
 
-const source = new EventSource(`/comments/stream/${cmtBtn.dataset.id}`);
+function openComentSection() {
+  document.querySelector(".discuss-btn").addEventListener("click", () => {
+    document.querySelector(".comment").classList.remove("cmt");
+    document.querySelector(".temp").classList.add("displayOff");
+    document
+      .getElementById("commentInput")
+      .setAttribute("style", "display:block");
+    document.querySelector(".comment-func").classList.add("displayOn");
+  });
+}
 
-source.onmessage = async (event) => {
-  const data = JSON.parse(event.data);
+function closeCommentSection() {
+  document.querySelector(".cancel").addEventListener("click", () => {
+    document.querySelector(".comment-func").classList.remove("displayOn");
+    document.getElementById("commentInput").removeAttribute("style");
+    document.querySelector(".temp").classList.remove("displayOff");
+    document.querySelector(".comment").classList.add("cmt");
+    document.getElementById("commentInput").value = "";
+  });
+}
 
-  await releventCmt();
-};
-
-window.addEventListener("beforeunload", () => {
-  source.close();
-});
-
-///////////////////////////////////////////////////////////
-
-document.addEventListener("DOMContentLoaded", () => {
+function postEvent() {
   const wrapper = document.querySelector(".post-wrapper");
 
   if (!wrapper) return;
 
   wrapper.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    let reaction;
     const post = e.target.closest(".post");
+    const optBtnt = e.target.closest(".p-opt");
     const like = e.target.closest(".like");
     const disLike = e.target.closest(".dislike");
-    let postId = post.dataset.id;
+    let eraseCmt = e.target.closest(".p-opt-btn");
     let userId = document.querySelector(".main").dataset.id;
-    if (like) {
+
+    like && (reaction = "like");
+    disLike && (reaction = "disLike");
+
+    if (reaction) {
+      let postId = post.dataset.id;
       let data = { userId };
-      let response = await fetch(`/like/${postId}`, {
+      const opt = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
         credentials: "include",
-      });
-
-      if (!response.ok) {
-        return console.log("error");
+      };
+      let result = await fetchReactionData(reaction, postId, opt);
+      if (result.error === true) {
+        console.log(result.message);
       }
-      result = await response.json();
 
       return;
     }
 
-    if (disLike) {
-      let data = { userId };
-      let response = await fetch(`/dislike/${postId}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+    if (eraseCmt) {
+      const id = eraseCmt.dataset.cmt;
+      cmtDelete(id);
+    }
 
-      if (!response.ok) {
-        return console.log("error");
+    if (optBtnt) {
+      if (prevBtn === optBtnt) {
+        optBtnt.querySelector(".p-optD").classList.toggle("displayBlock");
+
+        return;
       }
-      result = await response.json();
+
+      document.querySelectorAll(".p-optD").forEach((btn) => {
+        if (btn.classList[1] === "displayBlock")
+          btn.classList.remove("displayBlock");
+      });
+      optBtnt.querySelector(".p-optD").classList.toggle("displayBlock");
+
+      prevBtn = optBtnt;
 
       return;
     }
-
-    // if (post) {
-    //   window.location = `/comment/${postId}`;
-
-    //   return;
-    // }
   });
-});
+}
 
-const line = new EventSource(`/reaction/stream/`);
-
-line.onmessage = async (event) => {
-  const result = JSON.parse(event.data);
-
-  const post = document.getElementById(`p${result.postId}`);
-  if (!post) {
-    return console.log("no post");
-  }
-
-  post.querySelector(".like-t").innerHTML = result.like;
-  post.querySelector(".dislike-t").innerHTML = result.dislike;
-};
-
-window.addEventListener("beforeunload", () => {
-  line.close();
-});
+function handleDocumentClick() {
+  document.addEventListener("click", () => {
+    optBtnB?.forEach((btn) => {
+      if (btn.classList[1] === "displayBlock") {
+        btn.classList.remove("displayBlock");
+      }
+    });
+    document.querySelector(".nave-bar").classList.remove("overflow");
+  });
+}

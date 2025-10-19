@@ -234,3 +234,6 @@
 .displayBlock {
   display: block;
 }
+.no-transition {
+  transition: none !important;
+}

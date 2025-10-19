@@ -13,7 +13,7 @@ import cors from "cors";
 const app = express();
 const port = 5000;
 env.config();
-
+app.use(express.static("public"));
 // const allowedOrigin = "https://7jctqtj0-5000.inc1.devtunnels.ms"; // or your frontend URL
 
 // app.use(
@@ -57,7 +57,6 @@ app.use((req, res, next) => {
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
 
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -301,7 +300,7 @@ app.get("/comment/:id", isAuthenticated, async (req, res) => {
   } catch (err) {}
 });
 
-//////////
+/////Make request from browser (fetch)/////
 
 app.get("/setting", isAuthenticated, async (req, res) => {
   let { id: userId } = req.user;

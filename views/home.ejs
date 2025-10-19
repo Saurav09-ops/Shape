@@ -16,7 +16,7 @@
 
     <title>Shape || Build you community</title>
   </head>
-  <body>
+  <body style="visibility: hidden">
     <!-- top navebar -->
 
     <section class="nave-bar">
@@ -45,6 +45,7 @@
 
         <div class="profile">
           <img class="p-pic" src="<%=pic.profile_pic_url%>" alt="" />
+
           <div class="profile-menu">
             <ul class="flex">
               <li><a href="/profile">Profile</a></li>
@@ -134,7 +135,8 @@
                   <div class="p-optD">
                     <button
                       class="p-opt-btn"
-                      onclick="event.stopPropagation();save(<%=userId%>,<%=post.id%>)"
+                      data-user="<%=userId%>"
+                      data-post="<%=post.id%>"
                     >
                       <i class="fa fa-bookmark" aria-hidden="true"></i> Save
                     </button>
@@ -173,6 +175,6 @@
         <div class="main-navR"></div>
       </div>
     </section>
-    <script src="/js/home.js"></script>
+    <script type="module" src="/js/home.js"></script>
   </body>
 </html>

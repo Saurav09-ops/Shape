@@ -16,7 +16,7 @@
 
     <title>Shape||Build you community</title>
   </head>
-  <body>
+  <body style="visibility: hidden">
     <!-- top navebar -->
     <section class="nave-bar">
       <div class="container sm flex">
@@ -301,7 +301,7 @@
     <script>
       window.serverData = { posts: <%- JSON.stringify(posts) %> };
     </script>
-    <script src="/js/profile.js"></script>
+    <script type="module" src="/js/profile.js"></script>
   </body>
 </html>
 

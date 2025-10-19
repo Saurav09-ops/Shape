@@ -273,3 +273,7 @@ ul {
 .pb-1 {
   padding-bottom: 0.5rem;
 }
+
+.Blind-load {
+  visibility: hidden;
+}
